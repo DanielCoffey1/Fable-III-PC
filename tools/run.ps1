@@ -12,6 +12,12 @@ param(
     [switch]$SynchronousMemexport,
     [switch]$Bindful,
     [switch]$SynchronousShaders,
+    [switch]$LightingDiagnostics,
+    [switch]$ShaderIfFlow,
+    [ValidateRange(-1, 65535)]
+    [int]$CaptureLightmapRegion = -1,
+    [ValidateRange(1, 2000)]
+    [int]$CaptureMilliseconds = 250,
     [ValidateRange(0, 3600)]
     [int]$CaptureAfterSeconds = 0
 )
@@ -31,5 +37,9 @@ if ($SrgbRenderTargets) { $launchArguments += '--gamma_render_target_as_unorm16=
 if ($SynchronousMemexport) { $launchArguments += '--readback_memexport_fast=false' }
 if ($Bindful) { $launchArguments += '--d3d12_bindless=false' }
 if ($SynchronousShaders) { $launchArguments += '--async_shader_compilation=false' }
+if ($LightingDiagnostics) { $launchArguments += '--fable3_lighting_diagnostics=true' }
+if ($ShaderIfFlow) { $launchArguments += '--dxbc_switch=false' }
+if ($CaptureLightmapRegion -ge 0) { $launchArguments += "--fable3_capture_lightmap_region=$CaptureLightmapRegion" }
+if ($CaptureMilliseconds -ne 250) { $launchArguments += "--fable3_capture_milliseconds=$CaptureMilliseconds" }
 if ($CaptureAfterSeconds) { $launchArguments += "--fable3_capture_after_seconds=$CaptureAfterSeconds" }
 Start-Process -FilePath $executable -WorkingDirectory (Split-Path $executable) -ArgumentList $launchArguments -WindowStyle Normal

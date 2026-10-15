@@ -16,6 +16,7 @@ set(FABLE3_SOURCES
     src/startup_diagnostics.cpp
     src/kernel_compat.cpp
     src/frame_stats.cpp
+    src/lighting_diagnostics.cpp
 )
 
 if(WIN32)

@@ -20,6 +20,9 @@ REXCVAR_DEFINE_INT32(fable3_frame_limit, 0, "Fable III",
 REXCVAR_DEFINE_INT32(fable3_capture_after_seconds, 0, "Fable III",
                     "With RenderDoc attached, capture 250ms after this startup delay; 0 disables")
     .range(0, 3600);
+REXCVAR_DEFINE_INT32(fable3_capture_milliseconds, 250, "Fable III",
+                    "Duration of an explicitly requested RenderDoc capture")
+    .range(1, 2000);
 
 namespace {
 std::atomic<double> frame_ms{0};
@@ -54,7 +57,7 @@ void CaptureGameFrames() {
         REXSYS_INFO("[capture] Starting an explicit multi-frame RenderDoc capture");
       }
     }
-  } else if (now - capture_start >= std::chrono::milliseconds(250)) {
+  } else if (now - capture_start >= std::chrono::milliseconds(REXCVAR_GET(fable3_capture_milliseconds))) {
     const auto saved = api->EndFrameCapture(nullptr, nullptr);
     finished = true;
     active.store(false, std::memory_order_relaxed);

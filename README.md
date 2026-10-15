@@ -36,6 +36,8 @@ For development, `-FrameStats` logs interval aggregates every 300 guest frame su
 
 When launched under RenderDoc, F10 captures a short span of game submissions for diagnosing missing rendering. It has no capture effect without RenderDoc already attached. `-CaptureAfterSeconds N` optionally requests a timed startup capture; prefer F10 after the saved scene has loaded. Captures contain game resources and remain local under ignored development folders.
 
+`-LightingDiagnostics` enables bounded, forward-only observations of the original lightmap loader and registration functions (at most 64 observations per hook). `-ShaderIfFlow` tests alternative DXBC control flow; it did not correct the dark castle surfaces and is not a default. The startup log records effective shader-control-flow and memory-export settings. With RenderDoc already attached, `-CaptureLightmapRegion 58 -CaptureMilliseconds 1000` requests one capture after the castle lightmap registers; registration does not guarantee that all atlas generation has completed within that interval.
+
 The build helper also rejects unresolved-branch fatal placeholders in generated C++, which can otherwise compile successfully.
 
 Check `CMakePresets.json` for the generated preset names. Code generation alone is not a playable build: function boundaries, indirect calls, imports, and game-specific runtime behavior may need manual work.
