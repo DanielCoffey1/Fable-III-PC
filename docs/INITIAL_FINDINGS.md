@@ -80,3 +80,9 @@ The format-conversion switch correction passed normal codegen and native compila
 ## Getter/setter coverage
 
 The conditional-return callback build passed. Its next launch reached 0x82DCC950, a reference-count decrement and conditional virtual dispatch thunk. Added that exact 36-byte routine along with six inspected integer/float getter/setter leaves (0x829861E0, 0x82C06460, 0x82E1AC30, 0x82E1AC50, 0x82E1AC70, 0x83051470). Normal codegen and the 12-step incremental native build passed. The table-based callback file now contains 66 explicitly bounded routines.
+
+## Startup passes one minute
+
+The 66-entry callback build stayed alive for over a minute, reached repeated XNetLogonGetTitleID calls, and then stopped at unregistered 0x824C0B30. This is a 40-byte FP numeric callback ending at 0x824C0B54, referenced at 0x82004E8C. Added it and six other manually inspected normal entrypoints. Their boundaries end at original returns/tail branches or before already known entries; apparent exception funclets remain excluded. Normal codegen (53.0 seconds) and the 11-step native rebuild passed. The callback file now contains 73 routines, in addition to the primary manifest mappings.
+
+The upstream ReXGlue license text is retained under LICENSES/ for the generated scaffold and SDK integration material. Dependencies keep their respective upstream licenses.

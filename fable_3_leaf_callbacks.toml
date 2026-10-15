@@ -1,4 +1,4 @@
-# Straight-line leaf callbacks referenced by vtable-like pointer tables.
+# Inspected indirect-call entrypoints from pointer tables and runtime traces.
 # Boundaries verified in the pinned local executable image; no game bytes included.
 [functions]
 # Pointer-table reference: 0x82000fe0; final instruction: bctr.
@@ -133,3 +133,19 @@
 0x830B56B8 = { name = "LeafCallback_830B56B8", size = 0xC }
 # Pointer-table reference: 0x82059f44; final instruction: blr.
 0x830B8D18 = { name = "LeafCallback_830B8D18", size = 0xC }
+
+# Additional manually reviewed entrypoints, including branching and FP leaves.
+# 0x820044DC table reference; final return at 0x827EA3B8, then padding.
+0x827EA330 = { name = "Callback_827EA330", size = 0x8C }
+# 0x820FC660 table reference; both branches end in tail dispatch or return.
+0x82DA0278 = { name = "Callback_82DA0278", size = 0x38 }
+# 0x8200CF94 table reference; vector leaf returns at 0x82E06160.
+0x82E06148 = { name = "Callback_82E06148", size = 0x1C }
+# Conditional tail branch into known entry 0x82E54F44; other path tail-calls.
+0x82E54F18 = { name = "Callback_82E54F18", size = 0x2C }
+# 0x82002574 table reference; final return at 0x8302B844.
+0x8302B808 = { name = "Callback_8302B808", size = 0x40 }
+# Conditional tail branch into known entry 0x8304DDFC; other path returns.
+0x8304DDC0 = { name = "Callback_8304DDC0", size = 0x3C }
+# Reached during startup after network initialization; FP leaf, return at +0x24.
+0x824C0B30 = { name = "NumericCallback_824C0B30", size = 0x28 }
