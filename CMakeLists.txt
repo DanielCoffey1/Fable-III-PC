@@ -14,6 +14,7 @@ include(generated/rexglue.cmake)
 set(FABLE3_SOURCES
     src/main.cpp
     src/startup_diagnostics.cpp
+    src/kernel_compat.cpp
 )
 
 if(WIN32)

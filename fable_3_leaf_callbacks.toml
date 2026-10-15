@@ -466,3 +466,13 @@
 0x8314A418 = { name = "BoundedCallback_8314A418", size = 0x18 }
 # Materialized at 0x83221ae4; 3 reachable instructions.
 0x8323C220 = { name = "BoundedCallback_8323C220", size = 0xC }
+
+# Linear VMX128 metric callback materialized at 0x823186F0.
+# Seven instructions through fsqrts/blr, followed by zero padding.
+0x8228C1D8 = { name = "VectorMetricCallback_8228C1D8", size = 0x1C }
+
+# Vector component getters; exact five-instruction bodies ending in blr/padding.
+# First observed at runtime as an unregistered indirect call.
+0x82330F68 = { name = "VectorComponentX_82330F68", size = 0x14 }
+0x82330F80 = { name = "VectorComponentY_82330F80", size = 0x14 }
+0x82330F98 = { name = "VectorComponentW_82330F98", size = 0x14 }
