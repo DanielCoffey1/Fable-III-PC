@@ -1,6 +1,26 @@
+param(
+    [ValidateSet('auto', 'rtv', 'rov')]
+    [string]$RenderTargetPath = 'auto',
+    [ValidateSet('none', 'fast', 'some', 'full')]
+    [string]$ReadbackResolve = 'none',
+    [ValidateSet('any', 'd3d12', 'vulkan')]
+    [string]$Backend = 'any',
+    [switch]$FrameStats,
+    [switch]$Smooth60,
+    [switch]$FuzzyAlpha,
+    [switch]$SrgbRenderTargets
+)
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
 $executable = Join-Path $projectRoot 'out/build/win-amd64-release/fable_3.exe'
 if (!(Test-Path -LiteralPath $executable)) { throw 'No native build exists yet. Run tools/build.ps1 first.' }
 $gameRoot = Join-Path $projectRoot 'game'
-Start-Process -FilePath $executable -WorkingDirectory (Split-Path $executable) -ArgumentList @('--game_data_root', ('"' + $gameRoot + '"'), '--no-fullscreen', '--window_width', '1280', '--window_height', '720') -WindowStyle Normal
+$launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), '--no-fullscreen', '--window_width', '1280', '--window_height', '720')
+if ($RenderTargetPath -ne 'auto') { $launchArguments += @('--render_target_path_d3d12', $RenderTargetPath) }
+$launchArguments += @('--readback_resolve', $ReadbackResolve)
+$launchArguments += @('--fable3_gpu_backend', $Backend)
+if ($FrameStats) { $launchArguments += '--fable3_frame_stats=true' }
+if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
+if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }
+if ($SrgbRenderTargets) { $launchArguments += '--gamma_render_target_as_unorm16=false' }
+Start-Process -FilePath $executable -WorkingDirectory (Split-Path $executable) -ArgumentList $launchArguments -WindowStyle Normal

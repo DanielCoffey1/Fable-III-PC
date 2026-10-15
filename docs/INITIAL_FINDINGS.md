@@ -117,3 +117,19 @@ Normal codegen and the seven-step native rebuild passed. A scan of all generated
 The predicate-boundary fix passed normal codegen and native compilation. The subsequent launch passed the previous branch failure, displayed the illustrated loading screen, and advanced into a rendered 3D character/clothing-display scene. Daniel confirmed that controller input and audio both work. This is the first verified interactive rendering milestone; it is not evidence of complete game compatibility.
 
 Visible rendering defects remain. The earlier Lua startup errors and float16_4 pack warnings have not been proven harmless. Longer play sessions, new areas, saving/loading, combat, and frame pacing have not yet been validated. The running test was left open for the user, rather than restarted during play.
+
+## Rendering and pacing investigation
+
+Daniel reported a longer playable session with actions completed and no crashes, including saving without a crash. The local save directory contains mainsave/herosave and related files with the reported session's timestamps; those files were backed up locally before rendering experiments. Loading the saved scene in subsequent runs was verified visually. This is broader evidence than the earlier first-scene smoke test, but does not establish full-game compatibility.
+
+Rendering comparisons in the saved castle scene:
+
+- Default D3D12 host render targets: dark/missing surfaces remain.
+- D3D12 ROV path: dark surfaces remain; not adopted as a default.
+- Synchronous full resolve readback: dark surfaces remain; not adopted as a default because it can stall the GPU.
+- Vulkan: unavailable in the pinned prebuilt Windows GPU plugin; the plugin explicitly reports it was not compiled in.
+- The 20 float16_4 warnings originate from mask=3, shift=0 instructions in a packed conversion routine. Xenia's implementation treats this mask/shift like mask=2, shift=0, so the warning alone is not proof that those conversions are wrong. No speculative translation patch was applied.
+
+Added an optional frame-submission timing hook around 0x82D27AD0, which forwards to the original function unchanged. It supplies the F3 debug overlay and, only when fable3_frame_stats=true, logs aggregates per 300 frames. Measurements describe guest submission intervals, not actual display presents. The baseline settled at 33.33ms average (30 FPS); representative p95 values were 36.14-36.31ms, with zero intervals above 50ms in the sampled steady-scene windows. Loading produced much larger spikes and must be considered separately.
+
+Added an opt-in host limiter using a high-resolution waitable timer (sleep_until fallback), bounded to 0..240 FPS and disabled by default. tools/run.ps1 -Smooth60 turns off the SDK's 60Hz vblank gate and caps guest submissions at 60. It does not import Fable II tick-rate patches into Fable III. The first 60 FPS startup samples settled to 16.66ms average; gameplay and animation behavior still require comparison. Diagnostic logging remains optional to avoid the per-frame disk writes that affected earlier Fable II instrumentation.

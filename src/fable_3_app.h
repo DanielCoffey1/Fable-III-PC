@@ -5,6 +5,10 @@
 #pragma once
 
 #include <rex/rex_app.h>
+#include <rex/system/gpu_plugin.h>
+#include "frame_stats.h"
+
+REXCVAR_DECLARE(std::string, fable3_gpu_backend);
 
 class Fable3App : public rex::ReXApp {
  public:
@@ -20,7 +24,13 @@ class Fable3App : public rex::ReXApp {
   // void OnPostInitLogging() override {}
   void OnPreSetup(rex::RuntimeConfig& config) override {
     if (config.gpu_plugin.empty()) config.gpu_plugin = "xenos";
+    const auto backend = REXCVAR_GET(fable3_gpu_backend);
+    if (backend != "any") {
+      config.graphics = rex::system::LoadGpuPlugin(config.gpu_plugin, backend);
+      if (!config.graphics) throw std::runtime_error("Requested Fable III GPU backend is unavailable");
+    }
   }
+  void OnPostSetup() override { SetGuestFrameStats(Fable3FrameStats); }
   // void OnLoadXexImage(std::string& xex_image) override {}
   // void OnPostLoadXexImage() override {}
   // void OnPostSetup() override {}
