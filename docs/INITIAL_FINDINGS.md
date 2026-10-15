@@ -42,3 +42,15 @@ The SDK is kept locally in ignored tooling/rexglue-sdk. `tools/setup-sdk.ps1` ca
 ## Branch validation milestone
 
 Eleven explicit function boundaries resolved all seven original unresolved branches plus newly discovered neighboring calls. Normal (non-forced) codegen completed successfully in 47.9 seconds, writing 51 files and retaining 532 unchanged files. A generated-source scan found no unresolved-call traps. Twenty `Unexpected float16_4 pack instruction` warnings remain; codegen success is not runtime or instruction-semantics validation. Native compilation is the next check.
+
+## First native build and startup
+
+The complete Release build compiled and linked successfully with Clang 19.1.5 (296 build steps). This validates local compilation despite the wiki's newer compiler recommendation. The source executable is approximately 98 MB; generated game code, the executable, and PDB files remain local and ignored.
+
+The first launch initialized audio and guest execution, then stopped at unregistered indirect callback 0x82D65110. Inspection showed a 16-byte vtable dispatch thunk, whose address is explicitly materialized and passed to the streaming callback setup. Added that mapping and the adjacent 8-byte member thunk at 0x82D65120. The incremental build passed.
+
+The scaffold did not enable GPU emulation by default. The project now stages the xenos plugin in CMake and selects it in OnPreSetup when no plugin is supplied. A subsequent launch selected the RTX 5090 and initialized Direct3D 12, shader storage, audio, and input, but did not reach the menu.
+
+Startup then failed on a guest null read. A local debugger capture identified __imp__sub_822D3E40. Forward-only diagnostics at the upstream guest error formatter exposed an earlier Lua error: `function expected instead of nil` (caller 0x822A596C). Diagnostics log the error and call the original implementation without skipping it. The initial allocation-path interpretation was incorrect; these functions belong to Lua's error path.
+
+CRT inspection located setjmp at 0x83140BE0 and longjmp at 0x82E31DA0 (saving/restoring f14-f31, r13-r31, LR, and other jump-buffer state). Native nonlocal control-flow handling is being configured next. No claim of menu/gameplay success is made.

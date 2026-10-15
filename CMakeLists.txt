@@ -13,6 +13,7 @@ include(generated/rexglue.cmake)
 # Sources
 set(FABLE3_SOURCES
     src/main.cpp
+    src/startup_diagnostics.cpp
 )
 
 if(WIN32)
@@ -21,4 +22,9 @@ else()
     add_executable(fable_3 ${FABLE3_SOURCES})
 endif()
 
-rexglue_setup_target(fable_3)
+rexglue_setup_target(fable_3 GPU_PLUGINS xenos)
+
+if(WIN32)
+    # Preserve guest-code line tables for diagnosing startup faults.
+    target_link_options(fable_3 PRIVATE LINKER:/DEBUG:FULL LINKER:/INCREMENTAL:NO)
+endif()
