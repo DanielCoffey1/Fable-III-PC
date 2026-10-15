@@ -43,3 +43,4 @@ if ($unresolved) {
     $unresolved | ForEach-Object { Write-Warning "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" }
     throw 'Generated code contains unresolved branch traps; fix function boundaries before running.'
 }
+& (Join-Path $PSScriptRoot 'build-gpu-plugin.ps1') -Jobs $Jobs -Stage

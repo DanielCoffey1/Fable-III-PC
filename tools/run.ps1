@@ -7,6 +7,7 @@ param(
     [string]$Backend = 'any',
     [switch]$FrameStats,
     [switch]$Smooth60 = $true,
+    [switch]$OriginalGpu,
     [switch]$FuzzyAlpha,
     [switch]$SrgbRenderTargets,
     [switch]$SynchronousMemexport,
@@ -27,6 +28,14 @@ $executable = Join-Path $projectRoot 'out/build/win-amd64-release/fable_3.exe'
 if (!(Test-Path -LiteralPath $executable)) { throw 'No native build exists yet. Run tools/build.ps1 first.' }
 $gameRoot = Join-Path $projectRoot 'game'
 $launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), '--no-fullscreen', '--window_width', '1280', '--window_height', '720')
+if ($OriginalGpu) {
+    $launchArguments += '--gpu_plugin=xenos'
+} else {
+    if (!(Test-Path (Join-Path (Split-Path $executable) 'rexgpu-fable3.dll'))) {
+        throw 'The Fable III lighting plugin is missing. Run tools/build.ps1 or tools/build-gpu-plugin.ps1 -Stage.'
+    }
+    $launchArguments += @('--gpu_plugin=fable3', '--direct_host_resolve=false')
+}
 if ($RenderTargetPath -ne 'auto') { $launchArguments += "--render_target_path_d3d12=$RenderTargetPath" }
 $launchArguments += "--readback_resolve=$ReadbackResolve"
 $launchArguments += "--fable3_gpu_backend=$Backend"

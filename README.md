@@ -2,7 +2,7 @@
 
 Daniel's standalone Fable III static recompilation research project, initialized with [ReXGlue SDK v0.10.0](https://github.com/rexglue/rexglue-sdk/releases/tag/v0.10.0).
 
-**Status: gameplay, controller input, audio, saving, and reloading have been exercised locally.** Daniel reported a session without crashes, and confirmed smoother movement with the new 60 FPS pacing. Dark/missing surfaces remain unresolved, and full-game compatibility is untested. This is a separate project from Fable-II-PC. Fable II's game-specific function mappings and patches must not be applied to Fable III.
+**Status: gameplay, controller input, audio, saving, and reloading have been exercised locally.** Daniel reported a session without crashes and confirmed smoother 60 FPS pacing. The custom GPU plugin restored the dark castle walls and floors in the tested save, confirmed visually and by Daniel. Full-game compatibility remains untested. This is a separate project from Fable-II-PC. Fable II's game-specific function mappings and patches must not be applied to Fable III.
 
 ## Local content
 
@@ -30,7 +30,9 @@ cmake --preset win-amd64-release
 cmake --build --preset win-amd64-release
 ```
 
-Run `tools/run.ps1` to launch the local build in a visible 1280x720 window with the local game files and a 60 FPS host submission cap. `tools/run.ps1 -Smooth60:$false` restores the original pacing. Shader/pipeline caches are retained between launches; first-time compilation and area loading can still cause pauses. No Fable II tick-rate patch is applied to Fable III.
+The build helper also builds and stages `rexgpu-fable3.dll` from pinned upstream source and the tracked GPU patches. This requires Git, network access on the first build, and the Windows SDK HLSL compiler. Later builds reuse a hash-checked local cache. To rebuild only the plugin, run `tools/build-gpu-plugin.ps1 -Stage`. See [GPU compatibility details](docs/GPU_COMPATIBILITY.md) for the source revisions, correction, and limits.
+
+Run `tools/run.ps1` to launch the local build in a visible 1280x720 window with corrected castle lighting and a 60 FPS host submission cap. `tools/run.ps1 -OriginalGpu` selects the original SDK GPU plugin for comparison; `-Smooth60:$false` restores the original pacing. Shader/pipeline caches are retained between launches; first-time compilation and area loading can still cause pauses. No Fable II tick-rate patch is applied to Fable III.
 
 For development, `-FrameStats` logs interval aggregates every 300 guest frame submissions and F3 shows the timing overlay. These are submission measurements, not display-present measurements. Diagnostic rendering options include `-RenderTargetPath rov`, `-ReadbackResolve full`, `-FuzzyAlpha`, `-SrgbRenderTargets`, `-SynchronousMemexport`, `-Bindful`, and `-SynchronousShaders`. They are experiments, not recommended fixes. The pinned Windows GPU plugin includes D3D12 only; `-Backend vulkan` cannot run with that package. Check the startup `[render-config]` line when comparing settings: late-loaded GPU cvars require `--name=value` CLI syntax.
 

@@ -25,7 +25,7 @@ class Fable3App : public rex::ReXApp {
   // Override virtual hooks for customization:
   // void OnPostInitLogging() override {}
   void OnPreSetup(rex::RuntimeConfig& config) override {
-    if (config.gpu_plugin.empty()) config.gpu_plugin = "xenos";
+    if (config.gpu_plugin.empty()) config.gpu_plugin = "fable3";
     const auto backend = REXCVAR_GET(fable3_gpu_backend);
     if (backend != "any") {
       config.graphics = rex::system::LoadGpuPlugin(config.gpu_plugin, backend);
@@ -34,17 +34,18 @@ class Fable3App : public rex::ReXApp {
   }
   void OnPostSetup() override {
     SetGuestFrameStats(Fable3FrameStats);
-      REXSYS_INFO("[render-config] target={} readback={} fuzzy_alpha={} gamma_unorm16={} vsync={} frame_limit={} memexport={} memexport_fast={} shader_switch={} lighting_diagnostics={}",
+    REXSYS_INFO("[render-config] target={} readback={} fuzzy_alpha={} gamma_unorm16={} vsync={} frame_limit={} memexport={} memexport_fast={} shader_switch={} lighting_diagnostics={} direct_resolve={}",
         rex::cvar::GetFlagByName("render_target_path_d3d12"),
         rex::cvar::GetFlagByName("readback_resolve"),
         rex::cvar::GetFlagByName("use_fuzzy_alpha_epsilon"),
         rex::cvar::GetFlagByName("gamma_render_target_as_unorm16"),
         rex::cvar::GetFlagByName("vsync"),
-          rex::cvar::GetFlagByName("fable3_frame_limit"),
-          rex::cvar::GetFlagByName("readback_memexport"),
-          rex::cvar::GetFlagByName("readback_memexport_fast"),
-          rex::cvar::GetFlagByName("dxbc_switch"),
-          rex::cvar::GetFlagByName("fable3_lighting_diagnostics"));
+        rex::cvar::GetFlagByName("fable3_frame_limit"),
+        rex::cvar::GetFlagByName("readback_memexport"),
+        rex::cvar::GetFlagByName("readback_memexport_fast"),
+        rex::cvar::GetFlagByName("dxbc_switch"),
+        rex::cvar::GetFlagByName("fable3_lighting_diagnostics"),
+        rex::cvar::GetFlagByName("direct_host_resolve"));
   }
   void OnCreateDialogs(rex::ui::ImGuiDrawer*) override {
     rex::ui::RegisterBind("bind_fable3_capture", "F10", "Capture game frames with RenderDoc", RequestFable3Capture);

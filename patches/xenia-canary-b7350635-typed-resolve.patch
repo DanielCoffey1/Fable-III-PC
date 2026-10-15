@@ -1,0 +1,22 @@
+--- a/gpu/shaders/resolve_full_64bpp.xesli
++++ b/gpu/shaders/resolve_full_64bpp.xesli
+@@ -7,10 +7,19 @@
+  ******************************************************************************
+  */
+ 
++// Match the pinned ReXGlue D3D12 typed uint4 UAV binding.
++#ifdef SHADING_LANGUAGE_HLSL_XE
++#define byte_buffer_align16_wo_declare_xe(name, glsl_set, glsl_binding, hlsl_u, hlsl_space) RWBuffer<uint4> name : register(hlsl_u, hlsl_space);
++#endif
++
+ #include "endian.xesli"
+ #include "pixel_formats.xesli"
+ #define XE_RESOLVE_COPY_EDRAM_BYTE_BUFFER_ALIGNMENT 4
+ #include "resolve.xesli"
++#ifdef SHADING_LANGUAGE_HLSL_XE
++#undef byte_buffer_align16_store16_xe
++#define byte_buffer_align16_store16_xe(name, address, value) name[(address) >> 4u] = (value)
++#endif
+ 
+ byte_buffer_align16_wo_declare_xe(xe_resolve_dest, set=1, binding=0, u0, space0)
+ #define LOCAL_SIZE_X_XE 8

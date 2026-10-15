@@ -1,0 +1,11 @@
+{
+  "gpu/shaders/edram.xesli": "297927ba8d0fe53f608a29dfb33dce5e6988735f78adeb31210d97e7739fafeb",
+  "gpu/shaders/endian.xesli": "a2bae617ba27371d6b881808ab1fc29621ef043c83bde0ded8b70e2642743108",
+  "gpu/shaders/pixel_formats.xesli": "a5d9b03d534c3cdd072c9691a78dd94329716cd0cbd347f1507d4f48f7f66c16",
+  "gpu/shaders/resolve.xesli": "9d2fa4bebf2d16cbf32b981ff498f86d1863d3165b73be821417a8d8ccbb8b92",
+  "gpu/shaders/resolve_full_64bpp.cs.xesl": "b73b2880f4cfa959e0630aae239fa5e05aac2f7407c2728ba6a6d213b37a7307",
+  "gpu/shaders/resolve_full_64bpp.xesli": "2d9a62132748a99afeffd6369db0c65fc042bd7678c7be7642b7e8e5d732474c",
+  "gpu/shaders/resolve_full_64bpp_scaled.cs.xesl": "056e9c5f0bd5ff76773dedebc8ce4ecc85ccc4ff4aa92ca4c7308aeeb1a1ff8b",
+  "gpu/shaders/texture_address.xesli": "f72d04cb599cf9f607dff66b7e677b7cd8ac261ad2e29fb8556821c57fea4fd1",
+  "ui/shaders/xesl.xesli": "f7847e2cf76076e5f71ed5777aa9f33f1fe5b040448e19abe314619423b9c935"
+}

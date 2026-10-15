@@ -1,0 +1,63 @@
+diff --git a/src/graphics/pipeline/render_target/cache.cpp b/src/graphics/pipeline/render_target/cache.cpp
+index 953c5fd..ece4121 100644
+--- a/src/graphics/pipeline/render_target/cache.cpp
++++ b/src/graphics/pipeline/render_target/cache.cpp
+@@ -37,7 +37,7 @@ REXCVAR_DEFINE_BOOL(execute_unclipped_draw_vs_on_cpu_for_psi_render_backend, tru
+ REXCVAR_DEFINE_BOOL(snorm16_render_target_full_range, true, "GPU",
+                     "Use full range for SNORM16 render targets");
+ 
+-REXCVAR_DEFINE_BOOL(direct_host_resolve, true, "GPU",
++REXCVAR_DEFINE_BOOL(direct_host_resolve, false, "GPU",
+                     "Resolve from host render targets directly to shared memory when possible")
+     .lifecycle(rex::cvar::Lifecycle::kHotReload);
+ 
+diff --git a/src/graphics/pipeline/shader/dxbc_translator_fetch.cpp b/src/graphics/pipeline/shader/dxbc_translator_fetch.cpp
+index 31de175..a498ec0 100644
+--- a/src/graphics/pipeline/shader/dxbc_translator_fetch.cpp
++++ b/src/graphics/pipeline/shader/dxbc_translator_fetch.cpp
+@@ -1952,6 +1952,33 @@ void DxbcShaderTranslator::ProcessTextureFetchInstruction(
+   }
+ 
+   if (instr.opcode == FetchOpcode::kTextureFetch) {
++    // Fable III atlas upload: the guest requests signed integer RGBA16,
++    // while the host view samples SNORM. Restore integer magnitude before
++    // applying the guest exponent. Isolated experimental plugin only.
++    // SNORM aliases -32768/-32767; exact endpoint preservation remains open.
++    uint32_t integer_temp = PushSystemTemp();
++    a_.OpAnd(dxbc::Dest::R(integer_temp, 0b0001),
++             RequestTextureFetchConstantWord(tfetch_index, 1), dxbc::Src::LU(63));
++    a_.OpIEq(dxbc::Dest::R(integer_temp, 0b0001),
++              dxbc::Src::R(integer_temp, dxbc::Src::kXXXX), dxbc::Src::LU(26));
++    a_.OpAnd(dxbc::Dest::R(integer_temp, 0b0010),
++             RequestTextureFetchConstantWord(tfetch_index, 3), dxbc::Src::LU(1));
++    a_.OpAnd(dxbc::Dest::R(integer_temp, 0b0001),
++             dxbc::Src::R(integer_temp, dxbc::Src::kXXXX),
++             dxbc::Src::R(integer_temp, dxbc::Src::kYYYY));
++    a_.OpAnd(dxbc::Dest::R(integer_temp, 0b0100),
++             RequestTextureFetchConstantWord(tfetch_index, 0), dxbc::Src::LU(0x3FC));
++    a_.OpIEq(dxbc::Dest::R(integer_temp, 0b0100),
++              dxbc::Src::R(integer_temp, dxbc::Src::kZZZZ), dxbc::Src::LU(0x154));
++    a_.OpAnd(dxbc::Dest::R(integer_temp, 0b0001),
++             dxbc::Src::R(integer_temp, dxbc::Src::kXXXX),
++             dxbc::Src::R(integer_temp, dxbc::Src::kZZZZ));
++    a_.OpIf(true, dxbc::Src::R(integer_temp, dxbc::Src::kXXXX));
++    a_.OpMul(dxbc::Dest::R(system_temp_result_, used_result_nonzero_components),
++             dxbc::Src::R(system_temp_result_), dxbc::Src::LF(32767.0f));
++    a_.OpEndIf();
++    PopSystemTemp();
++
+     // Apply the result exponent bias.
+     uint32_t exp_adjust_temp = PushSystemTemp();
+     a_.OpIBFE(dxbc::Dest::R(exp_adjust_temp, 0b0001), dxbc::Src::LU(6), dxbc::Src::LU(13),
+diff --git a/src/graphics/plugin_main.cpp b/src/graphics/plugin_main.cpp
+index ec756d3..934a180 100644
+--- a/src/graphics/plugin_main.cpp
++++ b/src/graphics/plugin_main.cpp
+@@ -37,6 +37,7 @@ extern "C" REX_GPU_PLUGIN_EXPORT rex::system::IGraphicsSystem* rex_gpu_create(
+     return nullptr;
+   }
+ 
++  REXLOG_INFO("Fable III GPU compatibility: signed16 integer fetch + signed 64bpp resolve");
+   std::string_view backend = info->backend ? info->backend : "any";
+ #if REX_HAS_D3D12
+   if (backend == "any" || backend == "d3d12") {
