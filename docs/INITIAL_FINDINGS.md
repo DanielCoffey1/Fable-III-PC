@@ -76,3 +76,7 @@ The diagnostic helper tools/debug-startup.py uses Windows x64 debugging APIs and
 ## Conditional-return callbacks
 
 The format-conversion switch correction passed normal codegen and native compilation. Startup then advanced for about 19 seconds before reaching unregistered 0x82DCF668. Inspection showed a 32-byte optional-member virtual dispatch thunk, with a conditional return for a null member and a final indirect tail call. Added it plus two similarly inspected conditional-return thunks, 0x826D4468 (28 bytes) and 0x83078DC8 (20 bytes). These compile successfully. The remaining more complex table candidates, including apparent exception funclets, are deliberately not registered as arbitrary standalone functions.
+
+## Getter/setter coverage
+
+The conditional-return callback build passed. Its next launch reached 0x82DCC950, a reference-count decrement and conditional virtual dispatch thunk. Added that exact 36-byte routine along with six inspected integer/float getter/setter leaves (0x829861E0, 0x82C06460, 0x82E1AC30, 0x82E1AC50, 0x82E1AC70, 0x83051470). Normal codegen and the 12-step incremental native build passed. The table-based callback file now contains 66 explicitly bounded routines.
