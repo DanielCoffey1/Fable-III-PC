@@ -35,3 +35,7 @@ longjmp_address = 0x82E31DA0
 
 # Graphics-state virtual callback, ending at the return before 0x821DFB98.
 0x821DFB30 = { name = "GraphicsStateCallback_821DFB30", size = 0x68 }
+[[entrypoint.switch_tables]]
+address = 0x82D6ECE0
+register = 18
+labels = [0x82d6ed18, 0x82d6ed24, 0x82d6ed24, 0x82d6ed3c, 0x82d6f01c, 0x82d6f01c, 0x82d6f01c, 0x82d6f01c, 0x82d6f01c, 0x82d6f01c, 0x82d6f01c, 0x82d6f01c, 0x82d6ed18]
