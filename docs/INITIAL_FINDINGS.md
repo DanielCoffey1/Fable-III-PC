@@ -58,3 +58,11 @@ CRT inspection located setjmp at 0x83140BE0 and longjmp at 0x82E31DA0 (saving/re
 ## Native nonlocal control-flow fix
 
 Configured the inspected setjmp/longjmp addresses in the entrypoint manifest. Normal codegen regenerated the relevant call sites to use ppc_setjmp/ppc_longjmp; the incremental Release build passed. The next launch recovered from the initial Lua nil-function error and continued into GPU interrupt setup instead of faulting in the error handler. It then exposed another unmapped virtual callback at 0x821DFB30. That routine was inspected through its final return at 0x821DFB94, immediately before the next function at 0x821DFB98 (size 0x68), and is being added.
+
+## Additional indirect-call coverage
+
+The next launch passed GPU interrupt setup and stopped at 0x82D01798. This is a six-instruction, 24-byte member/vtable dispatch thunk referenced at 0x820E7D30 in the executable's data tables.
+
+A local pointer-table scan identified other absent entries. Fifty-six were accepted only after checking that they start after a prior return/tail branch/padding, are referenced in a table near known function pointers, and consist entirely of a short straight-line integer sequence ending in a return, indirect tail dispatch, or tail branch to an already known function. The resulting fable_3_leaf_callbacks.toml records each address, exact size, and one table-reference address. The remaining complex candidates were not added speculatively. Names remain descriptive placeholders.
+
+Normal codegen with these mappings passed; the native incremental build is being checked. This increases indirect-call coverage but does not prove all runtime functions are mapped.

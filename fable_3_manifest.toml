@@ -8,7 +8,7 @@ game_root = "game"
 [entrypoint]
 file_path = "game/default.xex"
 out_directory_path = "generated/default"
-includes = []
+includes = ["fable_3_leaf_callbacks.toml"]
 # Verified CRT register-save/restore routines; use native nonlocal unwinding.
 setjmp_address = 0x83140BE0
 longjmp_address = 0x82E31DA0

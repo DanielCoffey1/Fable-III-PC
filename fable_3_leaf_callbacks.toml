@@ -1,0 +1,115 @@
+# Straight-line leaf callbacks referenced by vtable-like pointer tables.
+# Boundaries verified in the pinned local executable image; no game bytes included.
+[functions]
+# Pointer-table reference: 0x82000fe0; final instruction: bctr.
+0x8223E048 = { name = "LeafCallback_8223E048", size = 0x1C }
+# Pointer-table reference: 0x82007830; final instruction: blr.
+0x82249BC0 = { name = "LeafCallback_82249BC0", size = 0xC }
+# Pointer-table reference: 0x82001968; final instruction: blr.
+0x822545F8 = { name = "LeafCallback_822545F8", size = 0xC }
+# Pointer-table reference: 0x82082cdc; final instruction: b.
+0x82394978 = { name = "LeafCallback_82394978", size = 0x8 }
+# Pointer-table reference: 0x82086684; final instruction: b.
+0x823D7CF0 = { name = "LeafCallback_823D7CF0", size = 0x8 }
+# Pointer-table reference: 0x820a0774; final instruction: b.
+0x825FDEB8 = { name = "LeafCallback_825FDEB8", size = 0xC }
+# Pointer-table reference: 0x82003450; final instruction: blr.
+0x826B9188 = { name = "LeafCallback_826B9188", size = 0x8 }
+# Pointer-table reference: 0x82056c38; final instruction: bctr.
+0x82700F20 = { name = "LeafCallback_82700F20", size = 0x1C }
+# Pointer-table reference: 0x820b0df8; final instruction: blr.
+0x827C9EC0 = { name = "LeafCallback_827C9EC0", size = 0xC }
+# Pointer-table reference: 0x820bbdf4; final instruction: blr.
+0x828C7930 = { name = "LeafCallback_828C7930", size = 0xC }
+# Pointer-table reference: 0x82003ca0; final instruction: blr.
+0x829050F8 = { name = "LeafCallback_829050F8", size = 0x8 }
+# Pointer-table reference: 0x82007e74; final instruction: bctr.
+0x829A98F8 = { name = "LeafCallback_829A98F8", size = 0x10 }
+# Pointer-table reference: 0x82008020; final instruction: b.
+0x829AAEE0 = { name = "LeafCallback_829AAEE0", size = 0xC }
+# Pointer-table reference: 0x820047a4; final instruction: b.
+0x829C82E8 = { name = "LeafCallback_829C82E8", size = 0x4 }
+# Pointer-table reference: 0x820c6ae4; final instruction: blr.
+0x829D0298 = { name = "LeafCallback_829D0298", size = 0x8 }
+# Pointer-table reference: 0x820c1fc0; final instruction: blr.
+0x82AB4908 = { name = "LeafCallback_82AB4908", size = 0x8 }
+# Pointer-table reference: 0x820d3b2c; final instruction: bctr.
+0x82B40830 = { name = "LeafCallback_82B40830", size = 0x10 }
+# Pointer-table reference: 0x820d919c; final instruction: b.
+0x82B6D980 = { name = "LeafCallback_82B6D980", size = 0x4 }
+# Pointer-table reference: 0x820045a8; final instruction: blr.
+0x82BAF5E0 = { name = "LeafCallback_82BAF5E0", size = 0x8 }
+# Pointer-table reference: 0x820c6b08; final instruction: blr.
+0x82BB2658 = { name = "LeafCallback_82BB2658", size = 0x8 }
+# Pointer-table reference: 0x820dd004; final instruction: blr.
+0x82BC7F50 = { name = "LeafCallback_82BC7F50", size = 0xC }
+# Pointer-table reference: 0x820ddec8; final instruction: blr.
+0x82BE5688 = { name = "LeafCallback_82BE5688", size = 0xC }
+# Pointer-table reference: 0x820e0aa8; final instruction: bctr.
+0x82C2A338 = { name = "LeafCallback_82C2A338", size = 0x20 }
+# Pointer-table reference: 0x82003f18; final instruction: blr.
+0x82C4AEE8 = { name = "LeafCallback_82C4AEE8", size = 0x8 }
+# Pointer-table reference: 0x820e7d30; final instruction: bctr.
+0x82D01798 = { name = "LeafCallback_82D01798", size = 0x18 }
+# Pointer-table reference: 0x8200b850; final instruction: blr.
+0x82DF5620 = { name = "LeafCallback_82DF5620", size = 0x8 }
+# Pointer-table reference: 0x8200c9c0; final instruction: bctr.
+0x82DFB830 = { name = "LeafCallback_82DFB830", size = 0x18 }
+# Pointer-table reference: 0x8200dc94; final instruction: bctr.
+0x82E1A950 = { name = "LeafCallback_82E1A950", size = 0x20 }
+# Pointer-table reference: 0x8200dca0; final instruction: bctr.
+0x82E1A970 = { name = "LeafCallback_82E1A970", size = 0x18 }
+# Pointer-table reference: 0x8200dcac; final instruction: bctr.
+0x82E1A988 = { name = "LeafCallback_82E1A988", size = 0x28 }
+# Pointer-table reference: 0x8200dcb8; final instruction: bctr.
+0x82E1A9B0 = { name = "LeafCallback_82E1A9B0", size = 0x1C }
+# Pointer-table reference: 0x820112a0; final instruction: b.
+0x82E46D58 = { name = "LeafCallback_82E46D58", size = 0x8 }
+# Pointer-table reference: 0x820114ac; final instruction: b.
+0x82E4B068 = { name = "LeafCallback_82E4B068", size = 0x8 }
+# Pointer-table reference: 0x820114a8; final instruction: b.
+0x82E4B078 = { name = "LeafCallback_82E4B078", size = 0x8 }
+# Pointer-table reference: 0x8201147c; final instruction: b.
+0x82E4B080 = { name = "LeafCallback_82E4B080", size = 0x8 }
+# Pointer-table reference: 0x820114a0; final instruction: b.
+0x82E4B088 = { name = "LeafCallback_82E4B088", size = 0x8 }
+# Pointer-table reference: 0x82011460; final instruction: b.
+0x82E4B090 = { name = "LeafCallback_82E4B090", size = 0x8 }
+# Pointer-table reference: 0x82011484; final instruction: b.
+0x82E51828 = { name = "LeafCallback_82E51828", size = 0x8 }
+# Pointer-table reference: 0x8201146c; final instruction: b.
+0x82E51830 = { name = "LeafCallback_82E51830", size = 0x8 }
+# Pointer-table reference: 0x820117f4; final instruction: b.
+0x82E51838 = { name = "LeafCallback_82E51838", size = 0x8 }
+# Pointer-table reference: 0x82011494; final instruction: b.
+0x82E51848 = { name = "LeafCallback_82E51848", size = 0x8 }
+# Pointer-table reference: 0x820117d8; final instruction: b.
+0x82E51850 = { name = "LeafCallback_82E51850", size = 0x8 }
+# Pointer-table reference: 0x82011818; final instruction: b.
+0x82E51858 = { name = "LeafCallback_82E51858", size = 0x8 }
+# Pointer-table reference: 0x82011864; final instruction: b.
+0x82E51AF8 = { name = "LeafCallback_82E51AF8", size = 0x8 }
+# Pointer-table reference: 0x82011468; final instruction: b.
+0x82E51B08 = { name = "LeafCallback_82E51B08", size = 0x8 }
+# Pointer-table reference: 0x82011480; final instruction: b.
+0x82E51B10 = { name = "LeafCallback_82E51B10", size = 0x8 }
+# Pointer-table reference: 0x8201149c; final instruction: b.
+0x82E51B20 = { name = "LeafCallback_82E51B20", size = 0x8 }
+# Pointer-table reference: 0x820118fc; final instruction: b.
+0x82E521A0 = { name = "LeafCallback_82E521A0", size = 0x8 }
+# Pointer-table reference: 0x82011bd4; final instruction: bctr.
+0x82E5B038 = { name = "LeafCallback_82E5B038", size = 0x18 }
+# Pointer-table reference: 0x82011b68; final instruction: b.
+0x82E5BDF0 = { name = "LeafCallback_82E5BDF0", size = 0x8 }
+# Pointer-table reference: 0x82016854; final instruction: b.
+0x82E78830 = { name = "LeafCallback_82E78830", size = 0x8 }
+# Pointer-table reference: 0x82055a50; final instruction: blr.
+0x83030708 = { name = "LeafCallback_83030708", size = 0xC }
+# Pointer-table reference: 0x82057480; final instruction: blr.
+0x8306E800 = { name = "LeafCallback_8306E800", size = 0xC }
+# Pointer-table reference: 0x82059bc4; final instruction: blr.
+0x830B53C0 = { name = "LeafCallback_830B53C0", size = 0xC }
+# Pointer-table reference: 0x82059c18; final instruction: blr.
+0x830B56B8 = { name = "LeafCallback_830B56B8", size = 0xC }
+# Pointer-table reference: 0x82059f44; final instruction: blr.
+0x830B8D18 = { name = "LeafCallback_830B8D18", size = 0xC }
