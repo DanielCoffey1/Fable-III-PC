@@ -54,3 +54,7 @@ The scaffold did not enable GPU emulation by default. The project now stages the
 Startup then failed on a guest null read. A local debugger capture identified __imp__sub_822D3E40. Forward-only diagnostics at the upstream guest error formatter exposed an earlier Lua error: `function expected instead of nil` (caller 0x822A596C). Diagnostics log the error and call the original implementation without skipping it. The initial allocation-path interpretation was incorrect; these functions belong to Lua's error path.
 
 CRT inspection located setjmp at 0x83140BE0 and longjmp at 0x82E31DA0 (saving/restoring f14-f31, r13-r31, LR, and other jump-buffer state). Native nonlocal control-flow handling is being configured next. No claim of menu/gameplay success is made.
+
+## Native nonlocal control-flow fix
+
+Configured the inspected setjmp/longjmp addresses in the entrypoint manifest. Normal codegen regenerated the relevant call sites to use ppc_setjmp/ppc_longjmp; the incremental Release build passed. The next launch recovered from the initial Lua nil-function error and continued into GPU interrupt setup instead of faulting in the error handler. It then exposed another unmapped virtual callback at 0x821DFB30. That routine was inspected through its final return at 0x821DFB94, immediately before the next function at 0x821DFB98 (size 0x68), and is being added.

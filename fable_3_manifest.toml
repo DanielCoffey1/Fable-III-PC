@@ -9,6 +9,9 @@ game_root = "game"
 file_path = "game/default.xex"
 out_directory_path = "generated/default"
 includes = []
+# Verified CRT register-save/restore routines; use native nonlocal unwinding.
+setjmp_address = 0x83140BE0
+longjmp_address = 0x82E31DA0
 
 # Verified against the loaded image of the SHA-256-pinned USA/Europe XEX.
 # Short tail-call thunks were missed by automatic discovery.
@@ -25,3 +28,10 @@ includes = []
 0x82DCF918 = { name = "EmbeddedMemberThunk_82DCF918", size = 0x8 }
 0x82DC6210 = { name = "ObjectMemberThunk_82DC6210", size = 0x8 }
 0x82DCF920 = { name = "EmbeddedMemberThunk_82DCF920", size = 0x8 }
+
+# Startup streaming callbacks materialized as addresses and passed in registers.
+0x82D65110 = { name = "StreamingCallback_82D65110", size = 0x10 }
+0x82D65120 = { name = "StreamingMemberThunk_82D65120", size = 0x8 }
+
+# Graphics-state virtual callback, ending at the return before 0x821DFB98.
+0x821DFB30 = { name = "GraphicsStateCallback_821DFB30", size = 0x68 }
