@@ -28,3 +28,18 @@ Native Release and isolated GPU-plugin builds passed. The rebuild helper was als
 In the corrected, settled scene, representative submission timing windows averaged 16.67 ms, with p95 around 17.03–17.06 ms and no intervals over 50 ms in those windows. These are guest submission measurements, not display-present measurements or a full-game benchmark. Loading and first-time shader compilation still produce spikes. Earlier gameplay and save/reload testing passed, but the entire game and every later save path have not been retested with this GPU change.
 
 The upstream shader sources retain their BSD license. Licenses are preserved under `third_party/licenses`. Source references: [ReXGlue SDK](https://github.com/rexglue/rexglue-sdk/tree/f5337cdc947ff6d4c4196737e2c807a48f2a1fc2), [Xenia Canary signed-format packing](https://github.com/xenia-canary/xenia-canary/blob/b7350635be5a48a1b28b3bcf0e334b7f7c671abd/src/xenia/gpu/shaders/pixel_formats.xesli).
+
+## Distant geometry investigation (2026-10-15)
+
+Status: unresolved. Daniel reports scenery disappearing at a distance and returning on approach. A reproducible stationary view in the castle kitchen shows a pale opening above the carpeted stairs. The corrected lighting plugin is active; this is separate from the previously fixed dark surfaces.
+
+A local RenderDoc capture of that view was replayed successfully. In the main 1280-wide HDR target, pixels (420,45) and (400,60) receive approximately RGB (4.67,6.41,8.66) from the background draw (VS `8D7098792CE1C780`, PS `ED61745A66F939AC`). The adjacent pixel (450,50) is covered by scene geometry and rejects that background on depth. The pale region is therefore not simply a white texture sample. A scene draw touching the pale region is backface-culled; this alone does not establish an incorrect cull state. The expected covering surface has not yet been identified.
+
+Two live, temporary comparisons left the opening visually unchanged:
+
+- `occlusion_query_enable=false`, using the SDK's fallback sample count of 1000.
+- `readback_memexport_fast=false`, using synchronous memexport readback.
+
+Both settings were restored. These stationary tests do not exclude a visibility or streaming decision made earlier during loading, or prove that backface culling is the cause. No speculative rendering change was adopted. Temporary keyboard diagnostic bindings were also restored. Raw captures, exported render targets, replay scripts, save backups, and logs remain local in ignored directories.
+
+Next investigation: identify the expected distant surface and compare its draw submission and geometry between the distant and approached views. Preserve the lighting fix while distinguishing guest visibility/streaming from rasterizer rejection.
