@@ -111,3 +111,9 @@ The next runtime pass reached save-file initialization, then stopped at an unres
 Removed the separate 0x821B9BFC mapping and explicitly bounded the complete predicate at 0x821B9BD8 through its final blr at 0x821B9C40 (0x6C bytes). This retains all original paths. The metadata count remains 249. A build helper check now rejects generated unresolved-branch fatal placeholders, which otherwise compile successfully as C++. The earlier 35-entry canonical-thunk result should not be interpreted as proof that every preceding return establishes a standalone function.
 
 Normal codegen and the seven-step native rebuild passed. A scan of all generated C++ found no unresolved-branch fatal placeholders after this correction.
+
+## First rendered scene with working controller and audio
+
+The predicate-boundary fix passed normal codegen and native compilation. The subsequent launch passed the previous branch failure, displayed the illustrated loading screen, and advanced into a rendered 3D character/clothing-display scene. Daniel confirmed that controller input and audio both work. This is the first verified interactive rendering milestone; it is not evidence of complete game compatibility.
+
+Visible rendering defects remain. The earlier Lua startup errors and float16_4 pack warnings have not been proven harmless. Longer play sessions, new areas, saving/loading, combat, and frame pacing have not yet been validated. The running test was left open for the user, rather than restarted during play.

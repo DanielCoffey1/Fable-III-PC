@@ -2,7 +2,7 @@
 
 Daniel's standalone Fable III static recompilation research project, initialized with [ReXGlue SDK v0.10.0](https://github.com/rexglue/rexglue-sdk/releases/tag/v0.10.0).
 
-**Status: native Release build succeeds; startup debugging in progress; not yet playable.** This is a separate project from Fable-II-PC. Fable II's game-specific function mappings and patches must not be applied to Fable III.
+**Status: native Release build reaches a rendered 3D scene; controller input and audio confirmed working.** This is an early working build, with visible rendering defects and broader gameplay/stability still untested. This is a separate project from Fable-II-PC. Fable II's game-specific function mappings and patches must not be applied to Fable III.
 
 ## Local content
 
@@ -29,6 +29,8 @@ Use `tools/build.ps1` to load the installed x64 developer environment, verify th
 cmake --preset win-amd64-release
 cmake --build --preset win-amd64-release
 ```
+
+Run `tools/run.ps1` to launch the local build in a visible 1280x720 window with the local game files. The build helper also rejects unresolved-branch fatal placeholders in generated C++, which can otherwise compile successfully.
 
 Check `CMakePresets.json` for the generated preset names. Code generation alone is not a playable build: function boundaries, indirect calls, imports, and game-specific runtime behavior may need manual work.
 
