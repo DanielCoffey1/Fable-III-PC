@@ -153,7 +153,6 @@
 # Canonical 16-byte virtual dispatch wrappers in code gaps.
 # Two linked lwz instructions, matching mtctr, and bctr.
 # Predecessor is zero padding, blr, or bctr.
-0x821B9BFC = { name = "DispatchThunk_821B9BFC", size = 0x10 }
 0x8229AD70 = { name = "DispatchThunk_8229AD70", size = 0x10 }
 0x825AED18 = { name = "DispatchThunk_825AED18", size = 0x10 }
 0x825AED28 = { name = "DispatchThunk_825AED28", size = 0x10 }
@@ -476,3 +475,6 @@
 0x82330F68 = { name = "VectorComponentX_82330F68", size = 0x14 }
 0x82330F80 = { name = "VectorComponentY_82330F80", size = 0x14 }
 0x82330F98 = { name = "VectorComponentW_82330F98", size = 0x14 }
+
+# Full predicate includes both conditional-return paths and internal dispatch.
+0x821B9BD8 = { name = "MemberStatePredicate_821B9BD8", size = 0x6C }

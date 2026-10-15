@@ -103,3 +103,11 @@ Added a small local XNetLogonGetTitleID import implementation that reads the loa
 That run stopped after approximately 86 seconds at unmapped 0x82330F68. Disassembly shows three adjacent vector component getters at 0x82330F68, 0x82330F80, and 0x82330F98, each a complete five-instruction body ending in blr followed by padding. Added each exact 20-byte boundary. The callback metadata now contains 249 entries. Startup remains unverified beyond this point; no title menu or gameplay has been demonstrated. Lua startup errors and float16_4 translation warnings remain open issues.
 
 Validation: normal codegen and the eight-step incremental Release build passed with the three vector getters. These newest mappings still require another runtime pass; a successful compile does not establish playability.
+
+## Predicate boundary correction and generated-branch validation
+
+The next runtime pass reached save-file initialization, then stopped at an unresolved branch from 0x821B9C1C to 0x821B9C28. Inspection showed that the previously added canonical-dispatch entry 0x821B9BFC is an internal path of the predicate beginning at 0x821B9BD8. A preceding blr alone was insufficient boundary evidence: the predicate branches over and back across this dispatch path.
+
+Removed the separate 0x821B9BFC mapping and explicitly bounded the complete predicate at 0x821B9BD8 through its final blr at 0x821B9C40 (0x6C bytes). This retains all original paths. The metadata count remains 249. A build helper check now rejects generated unresolved-branch fatal placeholders, which otherwise compile successfully as C++. The earlier 35-entry canonical-thunk result should not be interpreted as proof that every preceding return establishes a standalone function.
+
+Normal codegen and the seven-step native rebuild passed. A scan of all generated C++ found no unresolved-branch fatal placeholders after this correction.

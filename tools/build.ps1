@@ -36,3 +36,10 @@ if ($LASTEXITCODE -ne 0) { throw 'CMake configuration failed.' }
 if ($ConfigureOnly) { return }
 & $cmake --build --preset win-amd64-release --parallel $Jobs
 if ($LASTEXITCODE -ne 0) { throw 'Native build failed; inspect compiler diagnostics.' }
+# The recompiler can emit fatal branch placeholders that still compile as C++.
+$unresolved = Get-ChildItem (Join-Path $projectRoot 'generated/default') -Filter '*.cpp' |
+    Select-String -SimpleMatch 'REX_FATAL("Unresolved branch'
+if ($unresolved) {
+    $unresolved | ForEach-Object { Write-Warning "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" }
+    throw 'Generated code contains unresolved branch traps; fix function boundaries before running.'
+}
