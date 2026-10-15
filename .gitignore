@@ -1,0 +1,21 @@
+# Disc content and game-derived output stay local.
+/game/
+*.iso
+*.xex
+/data/
+/generated/*
+!/generated/rexglue.cmake
+/out/
+/work/
+/tooling/
+/saves/
+/cache/
+/logs/
+*.exe
+*.dll
+*.pdb
+*.dmp
+*.log
+.env
+.env.*
+CMakeUserPresets.json
