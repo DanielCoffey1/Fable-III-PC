@@ -10,13 +10,14 @@ $sdkCommit = 'f5337cdc947ff6d4c4196737e2c807a48f2a1fc2'
 $shaderCommit = 'b7350635be5a48a1b28b3bcf0e334b7f7c671abd'
 $fetchPatch = Join-Path $projectRoot 'patches/rexglue-v0.10.0-signed16-integer-fetch.patch'
 $geometryPatch = Join-Path $projectRoot 'patches/rexglue-v0.10.0-face-cull-diagnostic.patch'
+$visibilityPatch = Join-Path $projectRoot 'patches/rexglue-v0.10.0-mesh-visibility.patch'
 $resolvePatch = Join-Path $projectRoot 'patches/xenia-canary-b7350635-typed-resolve.patch'
 $manifestPath = Join-Path $PSScriptRoot 'gpu-plugin/shader-sources.json'
 if (!(Test-Path (Join-Path $sdk 'bin/rexruntime.dll'))) {
     throw 'Run tools/setup-sdk.ps1 before building the GPU plugin.'
 }
 New-Item -ItemType Directory -Force $work | Out-Null
-$inputs = @($PSCommandPath, $fetchPatch, $geometryPatch, $resolvePatch, $manifestPath,
+$inputs = @($PSCommandPath, $fetchPatch, $geometryPatch, $visibilityPatch, $resolvePatch, $manifestPath,
     (Join-Path $PSScriptRoot 'gpu-plugin/CMakeLists.txt'), (Join-Path $sdk 'bin/rexruntime.dll'))
 $signature = (($inputs | ForEach-Object { (Get-FileHash -LiteralPath $_ -Algorithm SHA256).Hash }) -join ':')
 $stampPath = Join-Path $work 'build-stamp.json'
@@ -32,7 +33,7 @@ if (!$cached) {
     }
     $head = & git -C $source rev-parse HEAD
     if ($LASTEXITCODE -ne 0 -or $head -ne $sdkCommit) { throw 'Unexpected GPU SDK source revision.' }
-    foreach ($sourcePatch in @($fetchPatch, $geometryPatch)) {
+    foreach ($sourcePatch in @($fetchPatch, $geometryPatch, $visibilityPatch)) {
         & git -C $source apply --reverse --check $sourcePatch 2>$null
         if ($LASTEXITCODE -ne 0) {
             & git -C $source apply --check $sourcePatch
