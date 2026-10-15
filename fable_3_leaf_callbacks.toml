@@ -149,3 +149,320 @@
 0x8304DDC0 = { name = "Callback_8304DDC0", size = 0x3C }
 # Reached during startup after network initialization; FP leaf, return at +0x24.
 0x824C0B30 = { name = "NumericCallback_824C0B30", size = 0x28 }
+
+# Canonical 16-byte virtual dispatch wrappers in code gaps.
+# Two linked lwz instructions, matching mtctr, and bctr.
+# Predecessor is zero padding, blr, or bctr.
+0x821B9BFC = { name = "DispatchThunk_821B9BFC", size = 0x10 }
+0x8229AD70 = { name = "DispatchThunk_8229AD70", size = 0x10 }
+0x825AED18 = { name = "DispatchThunk_825AED18", size = 0x10 }
+0x825AED28 = { name = "DispatchThunk_825AED28", size = 0x10 }
+0x825AED38 = { name = "DispatchThunk_825AED38", size = 0x10 }
+0x825AED48 = { name = "DispatchThunk_825AED48", size = 0x10 }
+0x825AED58 = { name = "DispatchThunk_825AED58", size = 0x10 }
+0x825AED68 = { name = "DispatchThunk_825AED68", size = 0x10 }
+0x825AED78 = { name = "DispatchThunk_825AED78", size = 0x10 }
+0x825AED88 = { name = "DispatchThunk_825AED88", size = 0x10 }
+0x825AED98 = { name = "DispatchThunk_825AED98", size = 0x10 }
+0x82865580 = { name = "DispatchThunk_82865580", size = 0x10 }
+0x82865590 = { name = "DispatchThunk_82865590", size = 0x10 }
+0x828655A0 = { name = "DispatchThunk_828655A0", size = 0x10 }
+0x828655B0 = { name = "DispatchThunk_828655B0", size = 0x10 }
+0x828655C0 = { name = "DispatchThunk_828655C0", size = 0x10 }
+0x828655D0 = { name = "DispatchThunk_828655D0", size = 0x10 }
+0x82ADFFC0 = { name = "DispatchThunk_82ADFFC0", size = 0x10 }
+0x82ADFFD0 = { name = "DispatchThunk_82ADFFD0", size = 0x10 }
+0x82ADFFE0 = { name = "DispatchThunk_82ADFFE0", size = 0x10 }
+0x82ADFFF0 = { name = "DispatchThunk_82ADFFF0", size = 0x10 }
+0x82AE0000 = { name = "DispatchThunk_82AE0000", size = 0x10 }
+0x82AE0010 = { name = "DispatchThunk_82AE0010", size = 0x10 }
+0x82AE0020 = { name = "DispatchThunk_82AE0020", size = 0x10 }
+0x82AE0030 = { name = "DispatchThunk_82AE0030", size = 0x10 }
+0x82AE0040 = { name = "DispatchThunk_82AE0040", size = 0x10 }
+0x82AE0050 = { name = "DispatchThunk_82AE0050", size = 0x10 }
+0x82AE0060 = { name = "DispatchThunk_82AE0060", size = 0x10 }
+0x82AE0070 = { name = "DispatchThunk_82AE0070", size = 0x10 }
+0x82C3A564 = { name = "DispatchThunk_82C3A564", size = 0x10 }
+0x82DCC940 = { name = "DispatchThunk_82DCC940", size = 0x10 }
+0x82DFB794 = { name = "DispatchThunk_82DFB794", size = 0x10 }
+0x82E1EAAC = { name = "DispatchThunk_82E1EAAC", size = 0x10 }
+0x830437C4 = { name = "DispatchThunk_830437C4", size = 0x10 }
+0x830437E4 = { name = "DispatchThunk_830437E4", size = 0x10 }
+
+# Bounded leaf entrypoints materialized as code addresses in callbacks.
+# All reachable instructions covered; no linked calls, nonvolatile-register
+# references, frame setup, traps, vector ops, or unknown external edges.
+# Materialized at 0x82480734; 26 reachable instructions.
+0x8225F578 = { name = "BoundedCallback_8225F578", size = 0x68 }
+# Materialized at 0x826d4d2c; 3 reachable instructions.
+0x822750C0 = { name = "BoundedCallback_822750C0", size = 0xC }
+# Materialized at 0x828a31bc; 2 reachable instructions.
+0x8228D010 = { name = "BoundedCallback_8228D010", size = 0x8 }
+# Materialized at 0x82833378; 69 reachable instructions.
+0x82297518 = { name = "BoundedCallback_82297518", size = 0x114 }
+# Materialized at 0x829057e0; 70 reachable instructions.
+0x8229AD80 = { name = "BoundedCallback_8229AD80", size = 0x118 }
+# Materialized at 0x82327ec4; 2 reachable instructions.
+0x823273F8 = { name = "BoundedCallback_823273F8", size = 0x8 }
+# Materialized at 0x8232806c; 2 reachable instructions.
+0x823275A8 = { name = "BoundedCallback_823275A8", size = 0x8 }
+# Materialized at 0x8233d458; 3 reachable instructions.
+0x82338A08 = { name = "BoundedCallback_82338A08", size = 0xC }
+# Materialized at 0x823af204; 19 reachable instructions.
+0x823AEF68 = { name = "BoundedCallback_823AEF68", size = 0x4C }
+# Materialized at 0x823dcd9c; 21 reachable instructions.
+0x823DC270 = { name = "BoundedCallback_823DC270", size = 0x54 }
+# Materialized at 0x823e8614; 2 reachable instructions.
+0x823E5350 = { name = "BoundedCallback_823E5350", size = 0x8 }
+# Materialized at 0x823f1064; 21 reachable instructions.
+0x823F0E58 = { name = "BoundedCallback_823F0E58", size = 0x54 }
+# Materialized at 0x823fb5e4; 21 reachable instructions.
+0x823FB330 = { name = "BoundedCallback_823FB330", size = 0x54 }
+# Materialized at 0x8241a7e4; 17 reachable instructions.
+0x824252F8 = { name = "BoundedCallback_824252F8", size = 0x44 }
+# Materialized at 0x824ca25c; 19 reachable instructions.
+0x824C9978 = { name = "BoundedCallback_824C9978", size = 0x4C }
+# Materialized at 0x82523e9c; 7 reachable instructions.
+0x8251BDF0 = { name = "BoundedCallback_8251BDF0", size = 0x1C }
+# Materialized at 0x825298d4; 4 reachable instructions.
+0x82529060 = { name = "BoundedCallback_82529060", size = 0x10 }
+# Materialized at 0x825c1a1c; 16 reachable instructions.
+0x825C1AD8 = { name = "BoundedCallback_825C1AD8", size = 0x40 }
+# Materialized at 0x825f7564; 21 reachable instructions.
+0x825F6FD0 = { name = "BoundedCallback_825F6FD0", size = 0x54 }
+# Materialized at 0x8263b704; 19 reachable instructions.
+0x8263AA78 = { name = "BoundedCallback_8263AA78", size = 0x4C }
+# Materialized at 0x826583b8; 68 reachable instructions.
+0x82657940 = { name = "BoundedCallback_82657940", size = 0x110 }
+# Materialized at 0x8267271c; 4 reachable instructions.
+0x826712C0 = { name = "BoundedCallback_826712C0", size = 0x10 }
+# Materialized at 0x8268d594; 19 reachable instructions.
+0x8268CA28 = { name = "BoundedCallback_8268CA28", size = 0x4C }
+# Materialized at 0x8271296c; 19 reachable instructions.
+0x827127D8 = { name = "BoundedCallback_827127D8", size = 0x4C }
+# Materialized at 0x827526b0; 13 reachable instructions.
+0x82747C80 = { name = "BoundedCallback_82747C80", size = 0x34 }
+# Materialized at 0x8276fd44; 19 reachable instructions.
+0x8276F1D8 = { name = "BoundedCallback_8276F1D8", size = 0x4C }
+# Materialized at 0x8279becc; 19 reachable instructions.
+0x8279BC30 = { name = "BoundedCallback_8279BC30", size = 0x4C }
+# Materialized at 0x827e3568; 2 reachable instructions.
+0x827E0290 = { name = "BoundedCallback_827E0290", size = 0x8 }
+# Materialized at 0x828344d4; 19 reachable instructions.
+0x82834350 = { name = "BoundedCallback_82834350", size = 0x4C }
+# Materialized at 0x8284bddc; 21 reachable instructions.
+0x8284BAD0 = { name = "BoundedCallback_8284BAD0", size = 0x54 }
+# Materialized at 0x8285cbcc; 21 reachable instructions.
+0x8285C5B8 = { name = "BoundedCallback_8285C5B8", size = 0x54 }
+# Materialized at 0x8288cb18; 6 reachable instructions.
+0x8288E060 = { name = "BoundedCallback_8288E060", size = 0x18 }
+# Materialized at 0x82890db4; 19 reachable instructions.
+0x828908C0 = { name = "BoundedCallback_828908C0", size = 0x4C }
+# Materialized at 0x8289cd40; 5 reachable instructions.
+0x82893030 = { name = "BoundedCallback_82893030", size = 0x14 }
+# Materialized at 0x828a0ff4; 21 reachable instructions.
+0x828A0D40 = { name = "BoundedCallback_828A0D40", size = 0x54 }
+# Materialized at 0x828e24a4; 19 reachable instructions.
+0x828E1EC0 = { name = "BoundedCallback_828E1EC0", size = 0x4C }
+# Materialized at 0x828e5d7c; 19 reachable instructions.
+0x828E5840 = { name = "BoundedCallback_828E5840", size = 0x4C }
+# Materialized at 0x828fc734; 19 reachable instructions.
+0x828FB7D0 = { name = "BoundedCallback_828FB7D0", size = 0x4C }
+# Materialized at 0x828ff510; 68 reachable instructions.
+0x828FF228 = { name = "BoundedCallback_828FF228", size = 0x110 }
+# Materialized at 0x829033a4; 19 reachable instructions.
+0x82902ED8 = { name = "BoundedCallback_82902ED8", size = 0x4C }
+# Materialized at 0x8290ebac; 21 reachable instructions.
+0x8290E6C0 = { name = "BoundedCallback_8290E6C0", size = 0x54 }
+# Materialized at 0x8291c79c; 19 reachable instructions.
+0x8291C118 = { name = "BoundedCallback_8291C118", size = 0x4C }
+# Materialized at 0x8291e524; 19 reachable instructions.
+0x8291E178 = { name = "BoundedCallback_8291E178", size = 0x4C }
+# Materialized at 0x82938e44; 21 reachable instructions.
+0x829389C8 = { name = "BoundedCallback_829389C8", size = 0x54 }
+# Materialized at 0x8293abb4; 19 reachable instructions.
+0x8293A918 = { name = "BoundedCallback_8293A918", size = 0x4C }
+# Materialized at 0x82940504; 19 reachable instructions.
+0x82940378 = { name = "BoundedCallback_82940378", size = 0x4C }
+# Materialized at 0x8294abdc; 19 reachable instructions.
+0x8294A820 = { name = "BoundedCallback_8294A820", size = 0x4C }
+# Materialized at 0x82985a24; 21 reachable instructions.
+0x82985650 = { name = "BoundedCallback_82985650", size = 0x54 }
+# Materialized at 0x82998058; 71 reachable instructions.
+0x82997340 = { name = "BoundedCallback_82997340", size = 0x11C }
+# Materialized at 0x829a215c; 19 reachable instructions.
+0x829A1C58 = { name = "BoundedCallback_829A1C58", size = 0x4C }
+# Materialized at 0x829b7bf4; 21 reachable instructions.
+0x829B7940 = { name = "BoundedCallback_829B7940", size = 0x54 }
+# Materialized at 0x829c0b2c; 21 reachable instructions.
+0x829C0700 = { name = "BoundedCallback_829C0700", size = 0x54 }
+# Materialized at 0x829c33a4; 21 reachable instructions.
+0x829C31B8 = { name = "BoundedCallback_829C31B8", size = 0x54 }
+# Materialized at 0x829c9f10; 2 reachable instructions.
+0x829C8F18 = { name = "BoundedCallback_829C8F18", size = 0x8 }
+# Materialized at 0x826007b4; 2 reachable instructions.
+0x829C9030 = { name = "BoundedCallback_829C9030", size = 0x8 }
+# Materialized at 0x829cf8c4; 19 reachable instructions.
+0x829CF1F0 = { name = "BoundedCallback_829CF1F0", size = 0x4C }
+# Materialized at 0x829d1444; 19 reachable instructions.
+0x829D11A8 = { name = "BoundedCallback_829D11A8", size = 0x4C }
+# Materialized at 0x829d34b4; 21 reachable instructions.
+0x829D3200 = { name = "BoundedCallback_829D3200", size = 0x54 }
+# Materialized at 0x829d66f4; 21 reachable instructions.
+0x829D61C8 = { name = "BoundedCallback_829D61C8", size = 0x54 }
+# Materialized at 0x829dc50c; 19 reachable instructions.
+0x829DC048 = { name = "BoundedCallback_829DC048", size = 0x4C }
+# Materialized at 0x829dd1a4; 19 reachable instructions.
+0x829DD020 = { name = "BoundedCallback_829DD020", size = 0x4C }
+# Materialized at 0x829e0e9c; 21 reachable instructions.
+0x829E07E8 = { name = "BoundedCallback_829E07E8", size = 0x54 }
+# Materialized at 0x829efcf0; 71 reachable instructions.
+0x829EF118 = { name = "BoundedCallback_829EF118", size = 0x11C }
+# Materialized at 0x829f39b4; 19 reachable instructions.
+0x829F36E8 = { name = "BoundedCallback_829F36E8", size = 0x4C }
+# Materialized at 0x829f53ec; 19 reachable instructions.
+0x829F4F60 = { name = "BoundedCallback_829F4F60", size = 0x4C }
+# Materialized at 0x829f65bc; 19 reachable instructions.
+0x829F6318 = { name = "BoundedCallback_829F6318", size = 0x4C }
+# Materialized at 0x829f7004; 19 reachable instructions.
+0x829F6F88 = { name = "BoundedCallback_829F6F88", size = 0x4C }
+# Materialized at 0x829fa004; 21 reachable instructions.
+0x829F9B18 = { name = "BoundedCallback_829F9B18", size = 0x54 }
+# Materialized at 0x82a0432c; 19 reachable instructions.
+0x82A04090 = { name = "BoundedCallback_82A04090", size = 0x4C }
+# Materialized at 0x82a089f4; 19 reachable instructions.
+0x82A087B8 = { name = "BoundedCallback_82A087B8", size = 0x4C }
+# Materialized at 0x82a0a5bc; 19 reachable instructions.
+0x82A09FA8 = { name = "BoundedCallback_82A09FA8", size = 0x4C }
+# Materialized at 0x82a0f55c; 19 reachable instructions.
+0x82A0F1A0 = { name = "BoundedCallback_82A0F1A0", size = 0x4C }
+# Materialized at 0x82a12fec; 19 reachable instructions.
+0x82A12E58 = { name = "BoundedCallback_82A12E58", size = 0x4C }
+# Materialized at 0x82a18e54; 21 reachable instructions.
+0x82A18968 = { name = "BoundedCallback_82A18968", size = 0x54 }
+# Materialized at 0x82a1a954; 21 reachable instructions.
+0x82A1A7B8 = { name = "BoundedCallback_82A1A7B8", size = 0x54 }
+# Materialized at 0x82a22c8c; 21 reachable instructions.
+0x82A22AF0 = { name = "BoundedCallback_82A22AF0", size = 0x54 }
+# Materialized at 0x82a25bac; 21 reachable instructions.
+0x82A257E0 = { name = "BoundedCallback_82A257E0", size = 0x54 }
+# Materialized at 0x82a39c44; 21 reachable instructions.
+0x82A39AB0 = { name = "BoundedCallback_82A39AB0", size = 0x54 }
+# Materialized at 0x82a3c0dc; 19 reachable instructions.
+0x82A3BD28 = { name = "BoundedCallback_82A3BD28", size = 0x4C }
+# Materialized at 0x82a3e5d4; 21 reachable instructions.
+0x82A3E208 = { name = "BoundedCallback_82A3E208", size = 0x54 }
+# Materialized at 0x82a40ba4; 21 reachable instructions.
+0x82A409F8 = { name = "BoundedCallback_82A409F8", size = 0x54 }
+# Materialized at 0x82a41c94; 21 reachable instructions.
+0x82A419D0 = { name = "BoundedCallback_82A419D0", size = 0x54 }
+# Materialized at 0x82a452d4; 21 reachable instructions.
+0x82A45130 = { name = "BoundedCallback_82A45130", size = 0x54 }
+# Materialized at 0x82a4717c; 21 reachable instructions.
+0x82A46FD8 = { name = "BoundedCallback_82A46FD8", size = 0x54 }
+# Materialized at 0x82a4b62c; 21 reachable instructions.
+0x82A4B488 = { name = "BoundedCallback_82A4B488", size = 0x54 }
+# Materialized at 0x82a4caac; 19 reachable instructions.
+0x82A4C698 = { name = "BoundedCallback_82A4C698", size = 0x4C }
+# Materialized at 0x82a4e06c; 19 reachable instructions.
+0x82A4DEE0 = { name = "BoundedCallback_82A4DEE0", size = 0x4C }
+# Materialized at 0x82a4e9f4; 19 reachable instructions.
+0x82A4E868 = { name = "BoundedCallback_82A4E868", size = 0x4C }
+# Materialized at 0x82a505ec; 19 reachable instructions.
+0x82A50348 = { name = "BoundedCallback_82A50348", size = 0x4C }
+# Materialized at 0x82a52414; 19 reachable instructions.
+0x82A521D8 = { name = "BoundedCallback_82A521D8", size = 0x4C }
+# Materialized at 0x82a535fc; 19 reachable instructions.
+0x82A53468 = { name = "BoundedCallback_82A53468", size = 0x4C }
+# Materialized at 0x82a56ac4; 19 reachable instructions.
+0x82A56820 = { name = "BoundedCallback_82A56820", size = 0x4C }
+# Materialized at 0x82a57b54; 19 reachable instructions.
+0x82A57840 = { name = "BoundedCallback_82A57840", size = 0x4C }
+# Materialized at 0x82a5f684; 19 reachable instructions.
+0x82A5F480 = { name = "BoundedCallback_82A5F480", size = 0x4C }
+# Materialized at 0x82a62ae4; 21 reachable instructions.
+0x82A62950 = { name = "BoundedCallback_82A62950", size = 0x54 }
+# Materialized at 0x82a657fc; 19 reachable instructions.
+0x82A654F0 = { name = "BoundedCallback_82A654F0", size = 0x4C }
+# Materialized at 0x82a6b4f4; 19 reachable instructions.
+0x82A6AD90 = { name = "BoundedCallback_82A6AD90", size = 0x4C }
+# Materialized at 0x82a718ec; 19 reachable instructions.
+0x82A71648 = { name = "BoundedCallback_82A71648", size = 0x4C }
+# Materialized at 0x82a7aff4; 19 reachable instructions.
+0x82A7A718 = { name = "BoundedCallback_82A7A718", size = 0x4C }
+# Materialized at 0x82a815c4; 21 reachable instructions.
+0x82A81310 = { name = "BoundedCallback_82A81310", size = 0x54 }
+# Materialized at 0x82a87c44; 21 reachable instructions.
+0x82A87988 = { name = "BoundedCallback_82A87988", size = 0x54 }
+# Materialized at 0x82a893ac; 21 reachable instructions.
+0x82A89048 = { name = "BoundedCallback_82A89048", size = 0x54 }
+# Materialized at 0x82a8e42c; 21 reachable instructions.
+0x82A8E288 = { name = "BoundedCallback_82A8E288", size = 0x54 }
+# Materialized at 0x82a8f098; 8 reachable instructions.
+0x82A8EF40 = { name = "BoundedCallback_82A8EF40", size = 0x20 }
+# Materialized at 0x82a925ac; 21 reachable instructions.
+0x82A922F8 = { name = "BoundedCallback_82A922F8", size = 0x54 }
+# Materialized at 0x82a9731c; 19 reachable instructions.
+0x82A96F68 = { name = "BoundedCallback_82A96F68", size = 0x4C }
+# Materialized at 0x82a98e10; 5 reachable instructions.
+0x82A98358 = { name = "BoundedCallback_82A98358", size = 0x14 }
+# Materialized at 0x82a9dd4c; 19 reachable instructions.
+0x82A9DAB0 = { name = "BoundedCallback_82A9DAB0", size = 0x4C }
+# Materialized at 0x82a9fa84; 19 reachable instructions.
+0x82A9F8F8 = { name = "BoundedCallback_82A9F8F8", size = 0x4C }
+# Materialized at 0x82aa1714; 19 reachable instructions.
+0x82AA1470 = { name = "BoundedCallback_82AA1470", size = 0x4C }
+# Materialized at 0x82aa6a9c; 19 reachable instructions.
+0x82AA65D0 = { name = "BoundedCallback_82AA65D0", size = 0x4C }
+# Materialized at 0x82aa7f54; 19 reachable instructions.
+0x82AA7CB8 = { name = "BoundedCallback_82AA7CB8", size = 0x4C }
+# Materialized at 0x82aab214; 19 reachable instructions.
+0x82AAAE60 = { name = "BoundedCallback_82AAAE60", size = 0x4C }
+# Materialized at 0x82aac1ec; 19 reachable instructions.
+0x82AAC058 = { name = "BoundedCallback_82AAC058", size = 0x4C }
+# Materialized at 0x82aaf294; 19 reachable instructions.
+0x82AAF220 = { name = "BoundedCallback_82AAF220", size = 0x4C }
+# Materialized at 0x82aafec4; 19 reachable instructions.
+0x82AAFC28 = { name = "BoundedCallback_82AAFC28", size = 0x4C }
+# Materialized at 0x82ab2674; 19 reachable instructions.
+0x82AB23D8 = { name = "BoundedCallback_82AB23D8", size = 0x4C }
+# Materialized at 0x82ab8c8c; 21 reachable instructions.
+0x82AB8800 = { name = "BoundedCallback_82AB8800", size = 0x54 }
+# Materialized at 0x82acaaac; 21 reachable instructions.
+0x82ACA7F0 = { name = "BoundedCallback_82ACA7F0", size = 0x54 }
+# Materialized at 0x82acba6c; 21 reachable instructions.
+0x82ACB7B0 = { name = "BoundedCallback_82ACB7B0", size = 0x54 }
+# Materialized at 0x82acf5cc; 21 reachable instructions.
+0x82ACF438 = { name = "BoundedCallback_82ACF438", size = 0x54 }
+# Materialized at 0x82ad1dcc; 21 reachable instructions.
+0x82AD1AD0 = { name = "BoundedCallback_82AD1AD0", size = 0x54 }
+# Materialized at 0x82ad2c9c; 21 reachable instructions.
+0x82AD2AF8 = { name = "BoundedCallback_82AD2AF8", size = 0x54 }
+# Materialized at 0x82adc8fc; 21 reachable instructions.
+0x82ADC608 = { name = "BoundedCallback_82ADC608", size = 0x54 }
+# Materialized at 0x82adf21c; 21 reachable instructions.
+0x82ADEC78 = { name = "BoundedCallback_82ADEC78", size = 0x54 }
+# Materialized at 0x82ae01e8; 5 reachable instructions.
+0x82AE0080 = { name = "BoundedCallback_82AE0080", size = 0x14 }
+# Materialized at 0x82ae1ed4; 21 reachable instructions.
+0x82AE1E50 = { name = "BoundedCallback_82AE1E50", size = 0x54 }
+# Materialized at 0x82ae2d24; 21 reachable instructions.
+0x82AE2CA0 = { name = "BoundedCallback_82AE2CA0", size = 0x54 }
+# Materialized at 0x82ae3794; 19 reachable instructions.
+0x82AE3600 = { name = "BoundedCallback_82AE3600", size = 0x4C }
+# Materialized at 0x82fa1f94; 10 reachable instructions.
+0x82FA1D60 = { name = "BoundedCallback_82FA1D60", size = 0x28 }
+# Materialized at 0x82fa1f54; 6 reachable instructions.
+0x82FA1DE0 = { name = "BoundedCallback_82FA1DE0", size = 0x18 }
+# Materialized at 0x82fa1f4c; 6 reachable instructions.
+0x82FA1DF8 = { name = "BoundedCallback_82FA1DF8", size = 0x18 }
+# Materialized at 0x82fa1f50; 6 reachable instructions.
+0x82FA1E10 = { name = "BoundedCallback_82FA1E10", size = 0x18 }
+# Materialized at 0x8312972c; 4 reachable instructions.
+0x83119F58 = { name = "BoundedCallback_83119F58", size = 0x10 }
+# Materialized at 0x8312abc0; 12 reachable instructions.
+0x83129DA8 = { name = "BoundedCallback_83129DA8", size = 0x30 }
+# Materialized at 0x8314b3e8; 6 reachable instructions.
+0x8314A418 = { name = "BoundedCallback_8314A418", size = 0x18 }
+# Materialized at 0x83221ae4; 3 reachable instructions.
+0x8323C220 = { name = "BoundedCallback_8323C220", size = 0xC }
