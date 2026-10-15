@@ -9,6 +9,8 @@ param(
     [switch]$Smooth60 = $true,
     [switch]$OriginalGpu,
     [switch]$DiagnosticTwoSidedGeometry,
+    [ValidateRange(1.0, 8.0)]
+    [double]$StaticDrawDistanceMultiplier = 1.0,
     [switch]$FuzzyAlpha,
     [switch]$SrgbRenderTargets,
     [switch]$SynchronousMemexport,
@@ -44,6 +46,7 @@ if ($RenderTargetPath -ne 'auto') { $launchArguments += "--render_target_path_d3
 $launchArguments += "--readback_resolve=$ReadbackResolve"
 $launchArguments += "--fable3_gpu_backend=$Backend"
 if ($FrameStats) { $launchArguments += '--fable3_frame_stats=true' }
+$launchArguments += "--fable3_static_draw_distance_multiplier=$($StaticDrawDistanceMultiplier.ToString([Globalization.CultureInfo]::InvariantCulture))"
 if ($DiagnosticTwoSidedGeometry) { $launchArguments += '--fable3_diagnostic_no_face_cull=true' }
 if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
 if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }

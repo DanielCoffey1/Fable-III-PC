@@ -17,6 +17,7 @@ set(FABLE3_SOURCES
     src/kernel_compat.cpp
     src/frame_stats.cpp
     src/lighting_diagnostics.cpp
+    src/visibility.cpp
 )
 
 if(WIN32)
