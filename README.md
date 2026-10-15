@@ -2,7 +2,7 @@
 
 Daniel's standalone Fable III static recompilation research project, initialized with [ReXGlue SDK v0.10.0](https://github.com/rexglue/rexglue-sdk/releases/tag/v0.10.0).
 
-**Status: initial executable analysis; not a playable PC port.** This is a separate project from Fable-II-PC. Fable II's game-specific function mappings and patches must not be applied to Fable III.
+**Status: branch validation passes; native build in progress; not yet a playable PC port.** This is a separate project from Fable-II-PC. Fable II's game-specific function mappings and patches must not be applied to Fable III.
 
 ## Local content
 
@@ -21,9 +21,9 @@ rexglue codegen fable_3_manifest.toml
 
 The project is already initialized; run codegen after supplying local content. Do not rerun init over custom source changes.
 
-Native compilation requires LLVM/Clang 20+, CMake 3.25+, Ninja, and MSVC/Windows SDK development libraries. These were not found in the current shell during initial inspection. The prebuilt SDK does not include a complete Windows C++ toolchain.
+Native compilation requires LLVM/Clang 20+, CMake 3.25+, Ninja, and MSVC/Windows SDK development libraries. Visual Studio Build Tools 2022 is now installed locally; its bundled Clang 19.1.5 configured successfully. Native compilation is being checked. The prebuilt SDK does not include a complete Windows C++ toolchain.
 
-Once those are available, configure SDK discovery as documented by ReXGlue and use:
+Use `tools/build.ps1` to load the installed x64 developer environment, verify the game executable hash, locate the pinned SDK, configure, and build. Use `tools/build.ps1 -ConfigureOnly` to check configuration. The underlying CMake commands are:
 
 ```powershell
 cmake --preset win-amd64-release

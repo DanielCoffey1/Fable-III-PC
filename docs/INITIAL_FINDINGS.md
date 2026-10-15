@@ -38,3 +38,7 @@ Next: inspect these targets and their containing functions, establish correct bo
 Visual Studio Build Tools 2022 17.14.42 installed successfully with the MSVC x64 libraries, Windows SDK, Clang 19.1.5, CMake, and Ninja. `tools/build.ps1 -ConfigureOnly` successfully detected the compiler and configured a Release Ninja build against the official ReXGlue v0.10.0 SDK. The installed Clang is older than the wiki recommendation of 20+; native compilation will determine whether further compiler work is required.
 
 The SDK is kept locally in ignored tooling/rexglue-sdk. `tools/setup-sdk.ps1` can fetch the exact package with SHA-256 validation. `.vsconfig` records the requested Visual Studio components. `tools/run.ps1` points the runtime at the local game directory without copying game assets into build outputs.
+
+## Branch validation milestone
+
+Eleven explicit function boundaries resolved all seven original unresolved branches plus newly discovered neighboring calls. Normal (non-forced) codegen completed successfully in 47.9 seconds, writing 51 files and retaining 532 unchanged files. A generated-source scan found no unresolved-call traps. Twenty `Unexpected float16_4 pack instruction` warnings remain; codegen success is not runtime or instruction-semantics validation. Native compilation is the next check.

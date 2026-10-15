@@ -9,3 +9,19 @@ game_root = "game"
 file_path = "game/default.xex"
 out_directory_path = "generated/default"
 includes = []
+
+# Verified against the loaded image of the SHA-256-pinned USA/Europe XEX.
+# Short tail-call thunks were missed by automatic discovery.
+[entrypoint.functions]
+0x82DC61E0 = { name = "ObjectMemberThunk_82DC61E0", size = 0x8 }
+0x82DC61F0 = { name = "ObjectMemberThunk_82DC61F0", size = 0x8 }
+0x82DC6200 = { name = "ObjectMemberThunk_82DC6200", size = 0x8 }
+0x82DDCED8 = { name = "OptionalMemberThunk_82DDCED8", size = 0x14 }
+0x8303CC38 = { name = "VtableSetupThunk_8303CC38", size = 0x10 }
+0x83062898 = { name = "StoreInFirstFreeSlot_83062898", size = 0x4C }
+
+0x82DC61F8 = { name = "ObjectMemberThunk_82DC61F8", size = 0x8 }
+0x82DC6208 = { name = "ObjectMemberThunk_82DC6208", size = 0x8 }
+0x82DCF918 = { name = "EmbeddedMemberThunk_82DCF918", size = 0x8 }
+0x82DC6210 = { name = "ObjectMemberThunk_82DC6210", size = 0x8 }
+0x82DCF920 = { name = "EmbeddedMemberThunk_82DCF920", size = 0x8 }

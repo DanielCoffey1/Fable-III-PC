@@ -13,6 +13,6 @@ The initial seven unresolved edges target six short functions absent from automa
 
 Mappings use `[entrypoint.functions]` in the v0.10.0 manifest. Root-level `[functions]` is ignored by that manifest parser; the older wiki example refers to the standalone config format.
 
-Once these boundaries are fixed, neighboring thunks become reachable. Additional inspected mappings currently cover 0x82DC61F8, 0x82DC6208, 0x82DC6210, 0x82DCF918, and 0x82DCF920, each eight bytes ending in a tail branch. Validation is being iterated; a clean generation pass is required before calling the branch work complete.
+Once these boundaries are fixed, neighboring thunks become reachable. Additional inspected mappings currently cover 0x82DC61F8, 0x82DC6208, 0x82DC6210, 0x82DCF918, and 0x82DCF920, each eight bytes ending in a tail branch. A subsequent normal codegen pass completed successfully without --force in 47.9 seconds. All seven original unresolved edges and the newly exposed edges are resolved; no unresolved-call traps remained in generated C++. Twenty float16_4 pack-instruction warnings remain separate correctness issues.
 
 Names describe observed structure only; they do not claim recovered original game symbol names.
