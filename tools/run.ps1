@@ -17,7 +17,7 @@ param(
     [switch]$SrgbRenderTargets,
     [switch]$SynchronousMemexport,
     [switch]$Bindful,
-    [switch]$SynchronousShaders,
+    [switch]$SynchronousShaders = $true,
     [switch]$LightingDiagnostics,
     [switch]$ShaderIfFlow,
     [ValidateRange(-1, 65535)]
@@ -51,13 +51,15 @@ if ($FrameStats) { $launchArguments += '--fable3_frame_stats=true' }
 $launchArguments += "--fable3_static_draw_distance_multiplier=$($StaticDrawDistanceMultiplier.ToString([Globalization.CultureInfo]::InvariantCulture))"
 if ($DiagnosticTwoSidedGeometry) { $launchArguments += '--fable3_diagnostic_no_face_cull=true' }
 if ($DiagnosticForceMeshVisibility) { $launchArguments += '--fable3_diagnostic_force_mesh_visibility=true' }
-if ($MeshOcclusionWorkaround -and !$OriginalGpu) { $launchArguments += '--fable3_mesh_occlusion_workaround=true' }
+if (!$OriginalGpu) {
+    $launchArguments += "--fable3_mesh_occlusion_workaround=$($MeshOcclusionWorkaround.IsPresent.ToString().ToLowerInvariant())"
+}
 if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
 if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }
 if ($SrgbRenderTargets) { $launchArguments += '--gamma_render_target_as_unorm16=false' }
 if ($SynchronousMemexport) { $launchArguments += '--readback_memexport_fast=false' }
 if ($Bindful) { $launchArguments += '--d3d12_bindless=false' }
-if ($SynchronousShaders) { $launchArguments += '--async_shader_compilation=false' }
+$launchArguments += "--async_shader_compilation=$((!$SynchronousShaders.IsPresent).ToString().ToLowerInvariant())"
 if ($LightingDiagnostics) { $launchArguments += '--fable3_lighting_diagnostics=true' }
 if ($ShaderIfFlow) { $launchArguments += '--dxbc_switch=false' }
 if ($CaptureLightmapRegion -ge 0) { $launchArguments += "--fable3_capture_lightmap_region=$CaptureLightmapRegion" }
