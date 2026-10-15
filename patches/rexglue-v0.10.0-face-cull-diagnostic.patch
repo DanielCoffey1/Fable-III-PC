@@ -1,0 +1,27 @@
+diff --git a/src/graphics/d3d12/pipeline_cache.cpp b/src/graphics/d3d12/pipeline_cache.cpp
+index 8e6b854..b8a4127 100644
+--- a/src/graphics/d3d12/pipeline_cache.cpp
++++ b/src/graphics/d3d12/pipeline_cache.cpp
+@@ -62,6 +62,10 @@ REXCVAR_DEFINE_INT32(d3d12_pipeline_creation_threads, -1, "GPU/D3D12",
+ REXCVAR_DEFINE_BOOL(d3d12_tessellation_wireframe, false, "GPU/D3D12",
+                     "Render tessellation as wireframe");
+ 
++REXCVAR_DEFINE_BOOL(fable3_diagnostic_no_face_cull, false, "GPU/D3D12",
++                    "Diagnostic only: disable polygon face culling")
++    .lifecycle(rex::cvar::Lifecycle::kHotReload);
++
+ namespace rex::graphics::d3d12 {
+ 
+ // Generated with `xb buildshaders`.
+@@ -1428,6 +1432,11 @@ bool PipelineCache::GetCurrentStateDescription(
+   if (tessellated && REXCVAR_GET(d3d12_tessellation_wireframe)) {
+     description_out.fill_mode_wireframe = 1;
+   }
++  // Keep rasterization-disabled draws disabled (including memexport-only draws).
++  if (primitive_polygonal && REXCVAR_GET(fable3_diagnostic_no_face_cull) &&
++      description_out.cull_mode != PipelineCullMode::kDisableRasterization) {
++    description_out.cull_mode = PipelineCullMode::kNone;
++  }
+   description_out.depth_clip = !regs.Get<reg::PA_CL_CLIP_CNTL>().clip_disable;
+   bool depth_stencil_bound_and_used = false;
+   if (!edram_rov_used) {

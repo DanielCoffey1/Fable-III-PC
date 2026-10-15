@@ -43,3 +43,13 @@ Two live, temporary comparisons left the opening visually unchanged:
 Both settings were restored. These stationary tests do not exclude a visibility or streaming decision made earlier during loading, or prove that backface culling is the cause. No speculative rendering change was adopted. Temporary keyboard diagnostic bindings were also restored. Raw captures, exported render targets, replay scripts, save backups, and logs remain local in ignored directories.
 
 Next investigation: identify the expected distant surface and compare its draw submission and geometry between the distant and approached views. Preserve the lighting fix while distinguishing guest visibility/streaming from rasterizer rejection.
+
+### Two-sided geometry diagnostic
+
+Byte-for-byte verification against the source ISO passed for all 286 extracted files (5,965,224,059 bytes). No extracted file was missing, truncated, or different from its source.
+
+A temporary GPU build added a live `fable3_diagnostic_no_face_cull` flag. In a fixed camera view partway up the castle stairs, enabling it removed the narrow bright vertical and horizontal edge around the far doorway. Disabling it brought those edges back; enabling it again removed them. This establishes that face culling affects that visible artifact, but does not yet prove why the intended surface is absent, or that the broader distance-dependent pop-in is fixed. Gameplay comparison is pending.
+
+The diagnostic is reproducible through `patches/rexglue-v0.10.0-face-cull-diagnostic.patch` and `tools/build-gpu-plugin.ps1`. Run `tools/run.ps1 -DiagnosticTwoSidedGeometry` to opt in. In the running game, F4 > GPU > D3D12 > `fable3_diagnostic_no_face_cull` toggles it without moving the camera. Leave "Save to config" alone for temporary comparisons.
+
+The flag defaults to false. It disables polygon face culling while preserving draws that already disable rasterization. Depth, clipping, guest streaming, texture conversion, and lighting behavior are not overridden. Drawing both sides can cover holes with an unintended back surface, change shadows, or cost performance, so this is a diagnostic rather than an adopted rendering fix. The existing lighting correction remains the normal default.

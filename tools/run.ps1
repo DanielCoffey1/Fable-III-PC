@@ -8,6 +8,7 @@ param(
     [switch]$FrameStats,
     [switch]$Smooth60 = $true,
     [switch]$OriginalGpu,
+    [switch]$DiagnosticTwoSidedGeometry,
     [switch]$FuzzyAlpha,
     [switch]$SrgbRenderTargets,
     [switch]$SynchronousMemexport,
@@ -23,6 +24,9 @@ param(
     [int]$CaptureAfterSeconds = 0
 )
 $ErrorActionPreference = 'Stop'
+if ($OriginalGpu -and $DiagnosticTwoSidedGeometry) {
+    throw 'DiagnosticTwoSidedGeometry requires the Fable III GPU plugin.'
+}
 $projectRoot = Split-Path $PSScriptRoot -Parent
 $executable = Join-Path $projectRoot 'out/build/win-amd64-release/fable_3.exe'
 if (!(Test-Path -LiteralPath $executable)) { throw 'No native build exists yet. Run tools/build.ps1 first.' }
@@ -40,6 +44,7 @@ if ($RenderTargetPath -ne 'auto') { $launchArguments += "--render_target_path_d3
 $launchArguments += "--readback_resolve=$ReadbackResolve"
 $launchArguments += "--fable3_gpu_backend=$Backend"
 if ($FrameStats) { $launchArguments += '--fable3_frame_stats=true' }
+if ($DiagnosticTwoSidedGeometry) { $launchArguments += '--fable3_diagnostic_no_face_cull=true' }
 if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
 if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }
 if ($SrgbRenderTargets) { $launchArguments += '--gamma_render_target_as_unorm16=false' }
