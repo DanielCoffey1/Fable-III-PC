@@ -6,7 +6,7 @@ param(
     [ValidateSet('any', 'd3d12', 'vulkan')]
     [string]$Backend = 'any',
     [switch]$FrameStats,
-    [switch]$Smooth60,
+    [switch]$Smooth60 = $true,
     [switch]$FuzzyAlpha,
     [switch]$SrgbRenderTargets
 )
@@ -16,9 +16,9 @@ $executable = Join-Path $projectRoot 'out/build/win-amd64-release/fable_3.exe'
 if (!(Test-Path -LiteralPath $executable)) { throw 'No native build exists yet. Run tools/build.ps1 first.' }
 $gameRoot = Join-Path $projectRoot 'game'
 $launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), '--no-fullscreen', '--window_width', '1280', '--window_height', '720')
-if ($RenderTargetPath -ne 'auto') { $launchArguments += @('--render_target_path_d3d12', $RenderTargetPath) }
-$launchArguments += @('--readback_resolve', $ReadbackResolve)
-$launchArguments += @('--fable3_gpu_backend', $Backend)
+if ($RenderTargetPath -ne 'auto') { $launchArguments += "--render_target_path_d3d12=$RenderTargetPath" }
+$launchArguments += "--readback_resolve=$ReadbackResolve"
+$launchArguments += "--fable3_gpu_backend=$Backend"
 if ($FrameStats) { $launchArguments += '--fable3_frame_stats=true' }
 if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
 if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }
