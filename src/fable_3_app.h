@@ -7,6 +7,7 @@
 #include <rex/rex_app.h>
 #include <rex/system/gpu_plugin.h>
 #include <rex/logging/macros.h>
+#include <rex/ui/keybinds.h>
 #include "frame_stats.h"
 
 REXCVAR_DECLARE(std::string, fable3_gpu_backend);
@@ -41,6 +42,10 @@ class Fable3App : public rex::ReXApp {
         rex::cvar::GetFlagByName("vsync"),
         rex::cvar::GetFlagByName("fable3_frame_limit"));
   }
+  void OnCreateDialogs(rex::ui::ImGuiDrawer*) override {
+    rex::ui::RegisterBind("bind_fable3_capture", "F10", "Capture game frames with RenderDoc", RequestFable3Capture);
+  }
+  void OnShutdown() override { rex::ui::UnregisterBind("bind_fable3_capture"); }
   // void OnLoadXexImage(std::string& xex_image) override {}
   // void OnPostLoadXexImage() override {}
   // void OnPostSetup() override {}

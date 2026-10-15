@@ -8,7 +8,12 @@ param(
     [switch]$FrameStats,
     [switch]$Smooth60 = $true,
     [switch]$FuzzyAlpha,
-    [switch]$SrgbRenderTargets
+    [switch]$SrgbRenderTargets,
+    [switch]$SynchronousMemexport,
+    [switch]$Bindful,
+    [switch]$SynchronousShaders,
+    [ValidateRange(0, 3600)]
+    [int]$CaptureAfterSeconds = 0
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
@@ -23,4 +28,8 @@ if ($FrameStats) { $launchArguments += '--fable3_frame_stats=true' }
 if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
 if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }
 if ($SrgbRenderTargets) { $launchArguments += '--gamma_render_target_as_unorm16=false' }
+if ($SynchronousMemexport) { $launchArguments += '--readback_memexport_fast=false' }
+if ($Bindful) { $launchArguments += '--d3d12_bindless=false' }
+if ($SynchronousShaders) { $launchArguments += '--async_shader_compilation=false' }
+if ($CaptureAfterSeconds) { $launchArguments += "--fable3_capture_after_seconds=$CaptureAfterSeconds" }
 Start-Process -FilePath $executable -WorkingDirectory (Split-Path $executable) -ArgumentList $launchArguments -WindowStyle Normal

@@ -8,17 +8,59 @@
 #include <atomic>
 #include <chrono>
 #include <thread>
+#include <mutex>
 #include <windows.h>
+#include <renderdoc/renderdoc_app.h>
 
 REXCVAR_DEFINE_BOOL(fable3_frame_stats, false, "Fable III",
                    "Log aggregate guest submission intervals every 300 frames");
 REXCVAR_DEFINE_INT32(fable3_frame_limit, 0, "Fable III",
                     "Host guest-submission limit; 0 leaves original pacing in control")
     .range(0, 240);
+REXCVAR_DEFINE_INT32(fable3_capture_after_seconds, 0, "Fable III",
+                    "With RenderDoc attached, capture 250ms after this startup delay; 0 disables")
+    .range(0, 3600);
 
 namespace {
 std::atomic<double> frame_ms{0};
 std::atomic<uint64_t> frame_count{0};
+std::atomic<bool> capture_requested{false};
+
+void CaptureGameFrames() {
+  using Clock = std::chrono::steady_clock;
+  const int delay = REXCVAR_GET(fable3_capture_after_seconds);
+  const bool requested = capture_requested.exchange(false, std::memory_order_relaxed);
+  // Continue an explicitly requested capture even with startup capture disabled.
+  static std::atomic<bool> active{false};
+  if (!delay && !requested && !active.load(std::memory_order_relaxed)) return;
+  static std::mutex capture_mutex;
+  const std::lock_guard lock(capture_mutex);
+  static const auto first_frame = Clock::now();
+  static bool finished = false;
+  static RENDERDOC_API_1_0_0* api = nullptr;
+  static auto capture_start = Clock::time_point{};
+  const auto now = Clock::now();
+  if (requested) { finished = false; capture_start = {}; }
+  if (finished || (!requested && !active.load(std::memory_order_relaxed) && now - first_frame < std::chrono::seconds(delay))) return;
+  if (capture_start == Clock::time_point{}) {
+    finished = true;
+    if (auto module = GetModuleHandleW(L"renderdoc.dll")) {
+      auto get_api = reinterpret_cast<pRENDERDOC_GetAPI>(GetProcAddress(module, "RENDERDOC_GetAPI"));
+      if (get_api && get_api(eRENDERDOC_API_Version_1_0_0, reinterpret_cast<void**>(&api))) {
+        api->StartFrameCapture(nullptr, nullptr);
+        capture_start = now;
+        active.store(true, std::memory_order_relaxed);
+        finished = false;
+        REXSYS_INFO("[capture] Starting an explicit multi-frame RenderDoc capture");
+      }
+    }
+  } else if (now - capture_start >= std::chrono::milliseconds(250)) {
+    const auto saved = api->EndFrameCapture(nullptr, nullptr);
+    finished = true;
+    active.store(false, std::memory_order_relaxed);
+    REXSYS_INFO("[capture] Explicit multi-frame capture saved={}", saved);
+  }
+}
 
 void PaceFrame() {
   using Clock = std::chrono::steady_clock;
@@ -57,10 +99,13 @@ rex::ui::FrameStats Fable3FrameStats() {
   return {ms, ms > 0 ? 1000.0 / ms : 0, frame_count.load(std::memory_order_relaxed)};
 }
 
+void RequestFable3Capture() { capture_requested.store(true, std::memory_order_relaxed); }
+
 REX_EXTERN(__imp__sub_82D27AD0);
 REX_EXTERN(sub_82D27AD0) {
   using Clock = std::chrono::steady_clock;
   PaceFrame();
+  CaptureGameFrames();
   // This routine runs on the rendering thread; keep samples local to that thread.
   thread_local auto previous = Clock::time_point{};
   thread_local std::array<double, 300> intervals{};
