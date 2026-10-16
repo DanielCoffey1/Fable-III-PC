@@ -5,4 +5,5 @@ $runner=Join-Path $config.root 'runner'
 $listener=Join-Path $runner 'bin\Runner.Listener.exe'
 if(@(Get-Process -Name Runner.Listener -ErrorAction SilentlyContinue | Where-Object {try{$_.Path -eq $listener}catch{$false}}).Count){return}
 $env:ALBION_AGENT_CONFIG=$ConfigPath
+if($config.ghConfigDirectory){$env:GH_CONFIG_DIR=$config.ghConfigDirectory}
 Start-Process -FilePath (Join-Path $runner 'run.cmd') -WorkingDirectory $runner -WindowStyle Hidden
