@@ -15,3 +15,12 @@ function Get-Fable3Resolution {
     }catch{}
     return '1080p'
 }
+function Get-Fable3FrameLimit {
+    param([string]$SettingsPath=(Join-Path $env:LOCALAPPDATA 'AlbionReborn\display-settings.json'))
+    if($env:ALBION_FPS -in @('0','30','60','90','120','144','165','240')){return [int]$env:ALBION_FPS}
+    try{
+        $value=Get-Content -LiteralPath $SettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if($value.schemaVersion -eq 1 -and [string]$value.frameLimit -in @('0','30','60','90','120','144','165','240')){return [int]$value.frameLimit}
+    }catch{}
+    return 60
+}

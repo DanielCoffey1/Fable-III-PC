@@ -13,6 +13,8 @@ param(
     [string]$Backend = 'any',
     [switch]$FrameStats,
     [switch]$Smooth60 = $true,
+    [ValidateSet(-1,0,30,60,90,120,144,165,240)]
+    [int]$FrameLimit = -1,
     [switch]$OriginalGpu,
     [switch]$DiagnosticTwoSidedGeometry,
     [switch]$DiagnosticForceMeshVisibility,
@@ -67,7 +69,7 @@ if ($DiagnosticForceMeshVisibility) { $launchArguments += '--fable3_diagnostic_f
 if (!$OriginalGpu) {
     $launchArguments += "--fable3_mesh_occlusion_workaround=$($MeshOcclusionWorkaround.IsPresent.ToString().ToLowerInvariant())"
 }
-if ($Smooth60) { $launchArguments += @('--vsync=false', '--fable3_frame_limit=60') }
+if ($Smooth60) { if($FrameLimit -lt 0){$FrameLimit=Get-Fable3FrameLimit}; $launchArguments += @('--vsync=false', "--fable3_frame_limit=$FrameLimit") } else { $launchArguments += '--fable3_frame_limit=0' }
 if ($FuzzyAlpha) { $launchArguments += '--use_fuzzy_alpha_epsilon=true' }
 if ($SrgbRenderTargets) { $launchArguments += '--gamma_render_target_as_unorm16=false' }
 if ($SynchronousMemexport) { $launchArguments += '--readback_memexport_fast=false' }
