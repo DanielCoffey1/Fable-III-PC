@@ -1,4 +1,8 @@
 param(
+    [switch]$Windowed,
+    [ValidateRange(0,3)]
+    [int]$RenderScale = 0,
+    [switch]$DryRun,
     [ValidateSet('auto', 'rtv', 'rov')]
     [string]$RenderTargetPath = 'auto',
     [ValidateSet('none', 'fast', 'some', 'full')]
@@ -35,7 +39,9 @@ $projectRoot = Split-Path $PSScriptRoot -Parent
 $executable = Join-Path $projectRoot 'out/build/win-amd64-release/fable_3.exe'
 if (!(Test-Path -LiteralPath $executable)) { throw 'No native build exists yet. Run tools/build.ps1 first.' }
 $gameRoot = Join-Path $projectRoot 'game'
-$launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), '--no-fullscreen', '--window_width', '1280', '--window_height', '720')
+. (Join-Path $PSScriptRoot 'display-settings.ps1')
+if(!$RenderScale){$RenderScale=Get-Fable3RenderScale}
+$launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), "--fullscreen=$((!$Windowed.IsPresent).ToString().ToLowerInvariant())", '--window_width=1280', '--window_height=720', '--video_mode_width=1280', '--video_mode_height=720', "--resolution_scale=$RenderScale")
 if ($OriginalGpu) {
     $launchArguments += '--gpu_plugin=xenos'
 } else {
@@ -65,4 +71,5 @@ if ($ShaderIfFlow) { $launchArguments += '--dxbc_switch=false' }
 if ($CaptureLightmapRegion -ge 0) { $launchArguments += "--fable3_capture_lightmap_region=$CaptureLightmapRegion" }
 if ($CaptureMilliseconds -ne 250) { $launchArguments += "--fable3_capture_milliseconds=$CaptureMilliseconds" }
 if ($CaptureAfterSeconds) { $launchArguments += "--fable3_capture_after_seconds=$CaptureAfterSeconds" }
+if($DryRun){$launchArguments;return}
 Start-Process -FilePath $executable -WorkingDirectory (Split-Path $executable) -ArgumentList $launchArguments -WindowStyle Normal
