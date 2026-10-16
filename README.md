@@ -1,4 +1,4 @@
-﻿# Fable III PC
+# Fable III PC
 
 Daniel's standalone Fable III static recompilation research project, initialized with [ReXGlue SDK v0.10.0](https://github.com/rexglue/rexglue-sdk/releases/tag/v0.10.0).
 
@@ -63,3 +63,9 @@ Albion Reborn's **Resolution** selector saves 1080p (default), 1440p, or 4K to `
 For renderer experiments, explicit `-RenderScale 1/2/3` instead keeps the 720p guest mode and applies integer internal drawing scale (1x/2x/3x). This is separate from the shared preset; the old `fable3-display.json` preference is superseded. `tools/test-display.ps1` checks these options without launching a game. SDL desktop fullscreen uses the current desktop mode: https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreenMode .
 
 Albion Reborn's **FPS limit** also applies here: 30, 60 (default), 90, 120, 144, 165, 240, or Unlimited. `tools/run.ps1 -FrameLimit 120` overrides the shared preference; `-FrameLimit 0` means Unlimited. The launcher passes its selection through the child-only `ALBION_FPS` environment variable. `-Smooth60:$false` remains a diagnostic escape hatch that disables the submission cap. Above-60 limits and Unlimited are experimental and do not guarantee correct game timing or the requested performance. Display tests exercise every cap while checking the rendering fixes remain enabled.
+
+## Release automation security
+
+The local Windows release runner is registered only to the private `DanielCoffey1/Albion-Release-Automation` repository. This public repository has no self-hosted workflow. The private agent checks reviewed main revisions of all three games and Albion Reborn every 15 minutes while the build PC is online, then publishes tested packages to the existing Albion-Reborn release feed. Players continue receiving updates through the launcher.
+
+Main requires a reviewed pull request, dismisses stale approvals, resolves review conversations, and blocks force pushes and deletion. Secret scanning and push protection are enabled. Administrators retain an emergency bypass. Review source and build-script changes before merging; private orchestration does not sandbox trusted main builds.
