@@ -1,4 +1,4 @@
-# Fable III PC
+﻿# Fable III PC
 
 Daniel's standalone Fable III static recompilation research project, initialized with [ReXGlue SDK v0.10.0](https://github.com/rexglue/rexglue-sdk/releases/tag/v0.10.0).
 
@@ -47,3 +47,9 @@ Check `CMakePresets.json` for the generated preset names. Code generation alone 
 ## Credits
 
 ReXGlue provides the scaffold, recompiler, and runtime, building on Xenia and earlier Xbox 360 recompilation work. Upstream dependencies retain their own licenses. Fable III and its game content belong to their respective owners.
+
+## Albion Reborn automated releases
+
+The **Build and publish Albion Reborn** workflow runs on main pushes, manual dispatch, and a 15-minute GitHub schedule. A Windows runner registered only to this private repository builds all three projects in isolated agent checkouts and publishes tested runtime bundles through Albion Reborn's public release feed. Source revisions are recorded in each release. Unchanged sources are skipped; failed builds leave the previous release available. The schedule also detects Fable II and launcher main-branch changes. The build PC must be awake, online, and signed in; the agent reconnects at sign-in through its Startup shortcut.
+
+Local game files, generated guest code, runner credentials, and agent configuration stay outside Git and workflow artifacts. Publishing uses the owner's existing local GitHub CLI authentication. Do not add pull-request triggers or register this runner with a public repository. Use the workflow's `validate_only` manual input to build/test without publishing. Build and packaging checks do not replace gameplay testing. `tools/ci/Start-AlbionAgent.ps1 -ConfigPath <local-json>` reconnects the configured runner manually.
