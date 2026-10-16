@@ -34,8 +34,16 @@ if (!$cached) {
     $head = & git -C $source rev-parse HEAD
     if ($LASTEXITCODE -ne 0 -or $head -ne $sdkCommit) { throw 'Unexpected GPU SDK source revision.' }
     foreach ($sourcePatch in @($fetchPatch, $geometryPatch, $visibilityPatch)) {
-        & git -C $source apply --reverse --check $sourcePatch 2>$null
-        if ($LASTEXITCODE -ne 0) {
+        # A fresh checkout is expected to fail the reverse check. Windows
+        # PowerShell otherwise promotes redirected native stderr to a fatal
+        # NativeCommandError before we can inspect git's exit code.
+        $previousPreference=$ErrorActionPreference
+        try {
+            $ErrorActionPreference='Continue'
+            & git -C $source apply --reverse --check $sourcePatch 2>$null
+            $reverseExit=$LASTEXITCODE
+        } finally { $ErrorActionPreference=$previousPreference }
+        if ($reverseExit -ne 0) {
             & git -C $source apply --check $sourcePatch
             if ($LASTEXITCODE -ne 0) { throw "GPU source patch does not apply cleanly: $sourcePatch" }
             & git -C $source apply $sourcePatch
