@@ -1,5 +1,7 @@
 param(
     [switch]$Windowed,
+    [ValidateSet('','1080p','1440p','4k')]
+    [string]$Resolution = '',
     [ValidateRange(0,3)]
     [int]$RenderScale = 0,
     [switch]$DryRun,
@@ -40,8 +42,13 @@ $executable = Join-Path $projectRoot 'out/build/win-amd64-release/fable_3.exe'
 if (!(Test-Path -LiteralPath $executable)) { throw 'No native build exists yet. Run tools/build.ps1 first.' }
 $gameRoot = Join-Path $projectRoot 'game'
 . (Join-Path $PSScriptRoot 'display-settings.ps1')
-if(!$RenderScale){$RenderScale=Get-Fable3RenderScale}
-$launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), "--fullscreen=$((!$Windowed.IsPresent).ToString().ToLowerInvariant())", '--window_width=1280', '--window_height=720', '--video_mode_width=1280', '--video_mode_height=720', "--resolution_scale=$RenderScale")
+$launchArguments = @('--game_data_root', ('"' + $gameRoot + '"'), "--fullscreen=$((!$Windowed.IsPresent).ToString().ToLowerInvariant())")
+if($RenderScale){
+    $launchArguments+=@('--window_width=1280','--window_height=720','--video_mode_width=1280','--video_mode_height=720',"--resolution_scale=$RenderScale")
+}else{
+    if(!$Resolution){$Resolution=Get-Fable3Resolution}
+    $launchArguments+=@("--resolution=$Resolution",'--resolution_scale=1')
+}
 if ($OriginalGpu) {
     $launchArguments += '--gpu_plugin=xenos'
 } else {

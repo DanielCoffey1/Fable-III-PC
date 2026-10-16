@@ -13,5 +13,9 @@ try {
     }
     $windowed=@(& (Join-Path $PSScriptRoot 'run.ps1') -DryRun -Windowed -RenderScale 1)
     if($windowed -notcontains '--fullscreen=false' -or $windowed -notcontains '--resolution_scale=1'){throw 'Windowed/native fallback failed.'}
+    foreach($preset in @('1080p','1440p','4k')){
+        $selected=@(& (Join-Path $PSScriptRoot 'run.ps1') -DryRun -Resolution $preset)
+        if($selected -notcontains "--resolution=$preset" -or $selected -notcontains '--resolution_scale=1'){throw 'Resolution selector arguments failed.'}
+    }
     Write-Output 'Passed: display profile validation, fullscreen/4K arguments, 60 FPS and rendering-fix preservation, windowed/native fallback.'
 }finally{if([IO.File]::Exists($temporary)){[IO.File]::Delete($temporary)}}
